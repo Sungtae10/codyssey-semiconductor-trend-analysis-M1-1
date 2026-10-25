@@ -92,10 +92,12 @@ python -m pip install -r requirements.txt
 
 | 환경 | Python | pandas | numpy | matplotlib | scipy | statsmodels | pyarrow |
 |---|---|---|---|---|---|---|---|
-| 작성 환경 | 3.13.17 | 3.0.5 | 2.5.3 | 3.11.2 | 1.18.1 | 0.15.0 | 26.0.0 |
-| 재현 확인 환경 | 3.11 | 2.2.3 | 1.26.4 | 3.8.4 | 1.13.1 | 0.14.4 | 17.0.0 |
+| 작성 환경 (최신 버전) | 3.13.17 | 3.0.5 | 2.5.3 | 3.11.2 | 1.18.1 | 0.15.0 | 26.0.0 |
+| 하한 버전 환경 (`requirements.txt` 하한 그대로) | 3.10.20 | 2.2.0 | 1.26.0 | 3.9.0 | 1.11.1 | 0.14.1 | 15.0.0 |
 
-두 환경에서 테스트 21개가 모두 통과했고 `results/metrics.json`의 숫자가 같았다. 그림의 한글 글꼴은 Windows에서 '맑은 고딕', macOS에서 'AppleGothic'을 자동으로 고른다.
+하한 버전 환경에서는 GitHub에서 저장소를 새로 내려받아 테스트 21개, `python -m src.fetch_data`, `python -m src.run_all`, 노트북 전체 실행(오류 0개, 그림 8장)을 모두 확인했다. 다시 만든 `data/`·`results/`·`docs/data/` 파일은 저장소에 올린 파일과 바이트 단위까지 같았고, 그림 PNG만 matplotlib 버전에 따라 글자 렌더링이 조금 달라졌다. 그림의 한글 글꼴은 Windows에서 '맑은 고딕', macOS에서 'AppleGothic'을 자동으로 고른다.
+
+**노트북 오류가 날 때:** `cannot import name 'backend2gui'` 오류는 matplotlib 3.8 이하와 IPython 9를 함께 쓸 때 생긴다. `python -m pip install -U matplotlib`로 올린 뒤 커널을 다시 시작한다.
 
 ## 데이터 출처와 이용 주의
 

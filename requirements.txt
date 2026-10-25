@@ -1,9 +1,12 @@
-# Python 3.10 이상. 검증한 환경: Python 3.13 (pandas 3.0.5, numpy 2.5.3, matplotlib 3.11.2, scipy 1.18.1, statsmodels 0.15.0)
-#                          Python 3.11 (pandas 2.2.3, numpy 1.26.4, matplotlib 3.8.4, scipy 1.13.1, statsmodels 0.14.4)
+# Python 3.10 이상.
+# 검증한 환경 (테스트 21개, python -m src.run_all, 노트북 전체 실행 모두 통과):
+#   최신 조합: Python 3.13 (pandas 3.0.5, numpy 2.5.3, matplotlib 3.11.2, scipy 1.18.1, statsmodels 0.15.0, pyarrow 26.0.0)
+#   하한 조합: Python 3.10 (pandas 2.2.0, numpy 1.26.0, matplotlib 3.9.0, scipy 1.11.1, statsmodels 0.14.1, pyarrow 15.0.0) = 아래 하한 그대로
+# matplotlib 3.8 이하는 IPython 9와 함께 쓰면 노트북에서 그림을 그릴 때 ImportError(backend2gui)가 나서 하한을 3.9로 둔다.
 pandas>=2.2
 numpy>=1.26
-matplotlib>=3.8
-scipy>=1.11
+matplotlib>=3.9
+scipy>=1.11.1
 statsmodels>=0.14.1
 
 # 데이터 재수집(python -m src.fetch_data)에서 parquet 파일을 읽을 때만 필요
