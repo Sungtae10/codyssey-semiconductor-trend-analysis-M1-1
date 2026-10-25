@@ -1,0 +1,68 @@
+date,weekday,reason,basis
+2023-01-23,월,설날 다음날,holidays.KR
+2023-01-24,화,설날 대체 휴일,holidays.KR
+2023-03-01,수,삼일절,holidays.KR
+2023-05-01,월,근로자의 날 (KRX 휴장),KRX 규정
+2023-05-05,금,어린이날,holidays.KR
+2023-05-29,월,부처님오신날 대체 휴일,holidays.KR
+2023-06-06,화,현충일,holidays.KR
+2023-08-15,화,광복절,holidays.KR
+2023-09-28,목,추석 전날,holidays.KR
+2023-09-29,금,추석,holidays.KR
+2023-10-02,월,임시공휴일,holidays.KR
+2023-10-03,화,개천절,holidays.KR
+2023-10-09,월,한글날,holidays.KR
+2023-12-25,월,기독탄신일,holidays.KR
+2023-12-29,금,연말 휴장일 (KRX),KRX 규정
+2024-01-01,월,신정연휴,holidays.KR
+2024-02-09,금,설날 전날,holidays.KR
+2024-02-12,월,설날 대체 휴일,holidays.KR
+2024-03-01,금,삼일절,holidays.KR
+2024-04-10,수,국회의원 선거일,holidays.KR
+2024-05-01,수,근로자의 날 (KRX 휴장),KRX 규정
+2024-05-06,월,어린이날 대체 휴일,holidays.KR
+2024-05-15,수,부처님오신날,holidays.KR
+2024-06-06,목,현충일,holidays.KR
+2024-08-15,목,광복절,holidays.KR
+2024-09-16,월,추석 전날,holidays.KR
+2024-09-17,화,추석,holidays.KR
+2024-09-18,수,추석 다음날,holidays.KR
+2024-10-01,화,국군의 날,holidays.KR
+2024-10-03,목,개천절,holidays.KR
+2024-10-09,수,한글날,holidays.KR
+2024-12-25,수,기독탄신일,holidays.KR
+2024-12-31,화,연말 휴장일 (KRX),KRX 규정
+2025-01-01,수,신정연휴,holidays.KR
+2025-01-27,월,임시공휴일,holidays.KR
+2025-01-28,화,설날 전날,holidays.KR
+2025-01-29,수,설날,holidays.KR
+2025-01-30,목,설날 다음날,holidays.KR
+2025-03-03,월,삼일절 대체 휴일,holidays.KR
+2025-05-01,목,근로자의 날 (KRX 휴장),KRX 규정
+2025-05-05,월,부처님오신날; 어린이날,holidays.KR
+2025-05-06,화,부처님오신날 대체 휴일; 어린이날 대체 휴일,holidays.KR
+2025-06-03,화,대통령 선거일,holidays.KR
+2025-06-06,금,현충일,holidays.KR
+2025-08-15,금,광복절,holidays.KR
+2025-10-03,금,개천절,holidays.KR
+2025-10-06,월,추석,holidays.KR
+2025-10-07,화,추석 다음날,holidays.KR
+2025-10-08,수,추석 대체 휴일,holidays.KR
+2025-10-09,목,한글날,holidays.KR
+2025-12-25,목,기독탄신일,holidays.KR
+2025-12-31,수,연말 휴장일 (KRX),KRX 규정
+2026-01-01,목,신정연휴,holidays.KR
+2026-02-16,월,설날 전날,holidays.KR
+2026-02-17,화,설날,holidays.KR
+2026-02-18,수,설날 다음날,holidays.KR
+2026-03-02,월,삼일절 대체 휴일,holidays.KR
+2026-05-01,금,노동절,holidays.KR
+2026-05-05,화,어린이날,holidays.KR
+2026-05-25,월,부처님오신날 대체 휴일,holidays.KR
+2026-06-03,수,지방선거일,holidays.KR
+2026-07-17,금,제헌절,holidays.KR
+2026-08-17,월,광복절 대체 휴일,holidays.KR
+2026-09-24,목,추석 전날,holidays.KR
+2026-09-25,금,추석,holidays.KR
+2026-10-05,월,개천절 대체 휴일,holidays.KR
+2026-10-09,금,한글날,holidays.KR
