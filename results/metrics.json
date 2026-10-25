@@ -1,0 +1,988 @@
+{
+  "meta": {
+    "analysis_period": [
+      "2023-01-02",
+      "2026-10-22"
+    ],
+    "base_date": "2022-12-29",
+    "trading_days": 927,
+    "data_ref": "eeed0817d1478597b738a3a6149c170ec7e3f4cb"
+  },
+  "quality": {
+    "basic": {
+      "stocks_rows": 2104,
+      "kospi_rows": 1052,
+      "columns": [
+        "Date",
+        "Code",
+        "Name",
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume",
+        "Amount",
+        "Changes",
+        "ChangesRatio",
+        "Marcap",
+        "Stocks"
+      ],
+      "fetch_period": [
+        "2022-07-01",
+        "2026-10-22"
+      ],
+      "analysis_period": [
+        "2023-01-02",
+        "2026-10-22"
+      ],
+      "analysis_trading_days": 927,
+      "rows_per_code": {
+        "000660": 1052,
+        "005930": 1052
+      },
+      "trading_days_by_year": {
+        "2023": 245,
+        "2024": 244,
+        "2025": 242,
+        "2026": 196
+      }
+    },
+    "missing": {
+      "stocks": {
+        "Date": 0,
+        "Code": 0,
+        "Name": 0,
+        "Open": 0,
+        "High": 0,
+        "Low": 0,
+        "Close": 0,
+        "Volume": 0,
+        "Amount": 0,
+        "Changes": 0,
+        "ChangesRatio": 0,
+        "Marcap": 0,
+        "Stocks": 0
+      },
+      "kospi": {
+        "Date": 0,
+        "n_constituents": 0,
+        "ret_kospi_pct": 0,
+        "ret_ex2_pct": 0,
+        "mcap_kospi_total": 0,
+        "mcap_kospi_common": 0
+      }
+    },
+    "duplicates": 0,
+    "calendar_aligned": true,
+    "closures": {
+      "weekday_non_trading_days": 67,
+      "explained_by_reference": 67,
+      "unexplained": [],
+      "reference_days_that_traded": []
+    },
+    "error_outliers": {
+      "ohlc_logic_violations": 0,
+      "nonpositive_price_or_volume": 0,
+      "price_limit_violations": 0,
+      "changes_mismatch": 0,
+      "ratio_mismatch": 0,
+      "max_abs_ratio_diff_pctpt": 0.005,
+      "max_abs_daily_change_pct": 29.95,
+      "kospi_ret_abs_max_pct": 17.9042
+    },
+    "statistical_extremes": {
+      "sec": {
+        "count": 20,
+        "by_year": {
+          "2023": 0,
+          "2024": 1,
+          "2025": 0,
+          "2026": 19
+        },
+        "mean_pct": 0.1891,
+        "std_pct": 2.9414,
+        "threshold_abs_pct": 8.82
+      },
+      "skh": {
+        "count": 13,
+        "by_year": {
+          "2023": 0,
+          "2024": 0,
+          "2025": 0,
+          "2026": 13
+        },
+        "mean_pct": 0.3759,
+        "std_pct": 3.8738,
+        "threshold_abs_pct": 11.62
+      },
+      "kospi": {
+        "count": 21,
+        "by_year": {
+          "2023": 0,
+          "2024": 1,
+          "2025": 1,
+          "2026": 19
+        },
+        "mean_pct": 0.119,
+        "std_pct": 2.0548,
+        "threshold_abs_pct": 6.16
+      }
+    },
+    "checkpoints": {
+      "n": 52,
+      "passed": 52,
+      "max_kospi_close_rel_error_pct": 0.171,
+      "max_kospi_change_abs_error_pctpt": 0.011,
+      "stock_values_exact": true
+    },
+    "all_hard_checks_passed": true
+  },
+  "period": {
+    "KOSPI": {
+      "2023": {
+        "base_date": "2022-12-29",
+        "end_date": "2023-12-28",
+        "base_value": 2236.4,
+        "end_value": 2655.802997,
+        "return_pct": 18.753488,
+        "ann_vol_pct": 15.369536,
+        "mdd_pct": -14.55746,
+        "mdd_peak_date": "2023-08-01",
+        "mdd_trough_date": "2023-10-31",
+        "best_day": "2023-11-06",
+        "best_day_pct": 5.646553,
+        "worst_day": "2023-10-26",
+        "worst_day_pct": -2.709704,
+        "up_day_ratio_pct": 54.285714,
+        "n_days": 245,
+        "high": 2667.847945,
+        "high_date": "2023-08-01",
+        "low": 2218.740481,
+        "low_date": "2023-01-03"
+      },
+      "2024": {
+        "base_date": "2023-12-28",
+        "end_date": "2024-12-30",
+        "base_value": 2655.802997,
+        "end_value": 2403.021844,
+        "return_pct": -9.518069,
+        "ann_vol_pct": 19.605488,
+        "mdd_pct": -18.300028,
+        "mdd_peak_date": "2024-07-11",
+        "mdd_trough_date": "2024-12-09",
+        "best_day": "2024-08-06",
+        "best_day_pct": 3.299237,
+        "worst_day": "2024-08-05",
+        "worst_day_pct": -8.75903,
+        "up_day_ratio_pct": 49.590164,
+        "n_days": 244,
+        "high": 2893.515511,
+        "high_date": "2024-07-11",
+        "low": 2364.001359,
+        "low_date": "2024-12-09"
+      },
+      "2025": {
+        "base_date": "2024-12-30",
+        "end_date": "2025-12-30",
+        "base_value": 2403.021844,
+        "end_value": 4219.323986,
+        "return_pct": 75.584088,
+        "ann_vol_pct": 21.518188,
+        "mdd_pct": -14.129361,
+        "mdd_peak_date": "2025-02-19",
+        "mdd_trough_date": "2025-04-09",
+        "best_day": "2025-04-10",
+        "best_day_pct": 6.598514,
+        "worst_day": "2025-04-07",
+        "worst_day_pct": -5.562354,
+        "up_day_ratio_pct": 60.743802,
+        "n_days": 242,
+        "high": 4227.885562,
+        "high_date": "2025-11-03",
+        "low": 2297.637129,
+        "low_date": "2025-04-09"
+      },
+      "2026YTD": {
+        "base_date": "2025-12-30",
+        "end_date": "2026-10-22",
+        "base_value": 4219.323986,
+        "end_value": 5539.40463,
+        "return_pct": 31.286544,
+        "ann_vol_pct": 60.751969,
+        "mdd_pct": -39.275418,
+        "mdd_peak_date": "2026-06-22",
+        "mdd_trough_date": "2026-10-22",
+        "best_day": "2026-07-31",
+        "best_day_pct": 17.904184,
+        "worst_day": "2026-03-04",
+        "worst_day_pct": -12.054818,
+        "up_day_ratio_pct": 61.734694,
+        "n_days": 196,
+        "high": 9122.178279,
+        "high_date": "2026-06-22",
+        "low": 4314.906231,
+        "low_date": "2026-01-02"
+      },
+      "전체": {
+        "base_date": "2022-12-29",
+        "end_date": "2026-10-22",
+        "base_value": 2236.4,
+        "end_value": 5539.40463,
+        "return_pct": 147.692927,
+        "ann_vol_pct": 32.618539,
+        "mdd_pct": -39.275418,
+        "mdd_peak_date": "2026-06-22",
+        "mdd_trough_date": "2026-10-22",
+        "best_day": "2026-07-31",
+        "best_day_pct": 17.904184,
+        "worst_day": "2026-03-04",
+        "worst_day_pct": -12.054818,
+        "up_day_ratio_pct": 56.31068,
+        "n_days": 927,
+        "high": 9122.178279,
+        "high_date": "2026-06-22",
+        "low": 2218.740481,
+        "low_date": "2023-01-03"
+      }
+    },
+    "SEC": {
+      "2023": {
+        "base_date": "2022-12-29",
+        "end_date": "2023-12-28",
+        "base_value": 55300.0,
+        "end_value": 78500.0,
+        "return_pct": 41.952984,
+        "ann_vol_pct": 21.03859,
+        "mdd_pct": -10.081744,
+        "mdd_peak_date": "2023-07-14",
+        "mdd_trough_date": "2023-10-06",
+        "best_day": "2023-09-01",
+        "best_day_pct": 6.12855,
+        "worst_day": "2023-01-31",
+        "worst_day_pct": -3.633491,
+        "up_day_ratio_pct": 51.020408,
+        "n_days": 245,
+        "high": 78500.0,
+        "high_date": "2023-12-28",
+        "low": 55400.0,
+        "low_date": "2023-01-03"
+      },
+      "2024": {
+        "base_date": "2023-12-28",
+        "end_date": "2024-12-30",
+        "base_value": 78500.0,
+        "end_value": 53200.0,
+        "return_pct": -32.229299,
+        "ann_vol_pct": 31.986037,
+        "mdd_pct": -43.166287,
+        "mdd_peak_date": "2024-07-09",
+        "mdd_trough_date": "2024-11-14",
+        "best_day": "2024-11-15",
+        "best_day_pct": 7.214429,
+        "worst_day": "2024-08-05",
+        "worst_day_pct": -10.301508,
+        "up_day_ratio_pct": 43.032787,
+        "n_days": 244,
+        "high": 87800.0,
+        "high_date": "2024-07-09",
+        "low": 49900.0,
+        "low_date": "2024-11-14"
+      },
+      "2025": {
+        "base_date": "2024-12-30",
+        "end_date": "2025-12-30",
+        "base_value": 53200.0,
+        "end_value": 119900.0,
+        "return_pct": 125.37594,
+        "ann_vol_pct": 34.353326,
+        "mdd_pct": -14.671467,
+        "mdd_peak_date": "2025-11-03",
+        "mdd_trough_date": "2025-11-21",
+        "best_day": "2025-07-28",
+        "best_day_pct": 6.828528,
+        "worst_day": "2025-11-21",
+        "worst_day_pct": -5.765408,
+        "up_day_ratio_pct": 54.132231,
+        "n_days": 242,
+        "high": 119900.0,
+        "high_date": "2025-12-30",
+        "low": 51000.0,
+        "low_date": "2025-02-03"
+      },
+      "2026YTD": {
+        "base_date": "2025-12-30",
+        "end_date": "2026-10-22",
+        "base_value": 119900.0,
+        "end_value": 214500.0,
+        "return_pct": 78.899083,
+        "ann_vol_pct": 83.710976,
+        "mdd_pct": -42.896552,
+        "mdd_peak_date": "2026-06-18",
+        "mdd_trough_date": "2026-07-30",
+        "best_day": "2026-07-31",
+        "best_day_pct": 26.811594,
+        "worst_day": "2026-07-28",
+        "worst_day_pct": -13.385827,
+        "up_day_ratio_pct": 53.061224,
+        "n_days": 196,
+        "high": 362500.0,
+        "high_date": "2026-06-18",
+        "low": 128500.0,
+        "low_date": "2026-01-02"
+      },
+      "전체": {
+        "base_date": "2022-12-29",
+        "end_date": "2026-10-22",
+        "base_value": 55300.0,
+        "end_value": 214500.0,
+        "return_pct": 287.884268,
+        "ann_vol_pct": 46.693368,
+        "mdd_pct": -43.166287,
+        "mdd_peak_date": "2024-07-09",
+        "mdd_trough_date": "2024-11-14",
+        "best_day": "2026-07-31",
+        "best_day_pct": 26.811594,
+        "worst_day": "2026-07-28",
+        "worst_day_pct": -13.385827,
+        "up_day_ratio_pct": 50.161812,
+        "n_days": 927,
+        "high": 362500.0,
+        "high_date": "2026-06-18",
+        "low": 49900.0,
+        "low_date": "2024-11-14"
+      }
+    },
+    "SKH": {
+      "2023": {
+        "base_date": "2022-12-29",
+        "end_date": "2023-12-28",
+        "base_value": 75000.0,
+        "end_value": 141500.0,
+        "return_pct": 88.666667,
+        "ann_vol_pct": 35.019472,
+        "mdd_pct": -16.754478,
+        "mdd_peak_date": "2023-02-08",
+        "mdd_trough_date": "2023-03-16",
+        "best_day": "2023-07-27",
+        "best_day_pct": 9.734513,
+        "worst_day": "2023-10-26",
+        "worst_day_pct": -5.882353,
+        "up_day_ratio_pct": 47.346939,
+        "n_days": 245,
+        "high": 141500.0,
+        "high_date": "2023-12-28",
+        "low": 75600.0,
+        "low_date": "2023-01-03"
+      },
+      "2024": {
+        "base_date": "2023-12-28",
+        "end_date": "2024-12-30",
+        "base_value": 141500.0,
+        "end_value": 173900.0,
+        "return_pct": 22.897527,
+        "ann_vol_pct": 49.347262,
+        "mdd_pct": -36.59751,
+        "mdd_peak_date": "2024-07-11",
+        "mdd_trough_date": "2024-09-19",
+        "best_day": "2024-09-26",
+        "best_day_pct": 9.437387,
+        "worst_day": "2024-08-02",
+        "worst_day_pct": -10.398345,
+        "up_day_ratio_pct": 49.180328,
+        "n_days": 244,
+        "high": 241000.0,
+        "high_date": "2024-07-11",
+        "low": 131000.0,
+        "low_date": "2024-01-17"
+      },
+      "2025": {
+        "base_date": "2024-12-30",
+        "end_date": "2025-12-30",
+        "base_value": 173900.0,
+        "end_value": 651000.0,
+        "return_pct": 274.353076,
+        "ann_vol_pct": 54.734921,
+        "mdd_pct": -26.91796,
+        "mdd_peak_date": "2025-01-22",
+        "mdd_trough_date": "2025-04-07",
+        "best_day": "2025-04-10",
+        "best_day_pct": 11.030303,
+        "worst_day": "2025-01-31",
+        "worst_day_pct": -9.864253,
+        "up_day_ratio_pct": 53.719008,
+        "n_days": 242,
+        "high": 651000.0,
+        "high_date": "2025-12-30",
+        "low": 164800.0,
+        "low_date": "2025-04-07"
+      },
+      "2026YTD": {
+        "base_date": "2025-12-30",
+        "end_date": "2026-10-22",
+        "base_value": 651000.0,
+        "end_value": 1223000.0,
+        "return_pct": 87.864823,
+        "ann_vol_pct": 98.199548,
+        "mdd_pct": -58.10209,
+        "mdd_peak_date": "2026-06-22",
+        "mdd_trough_date": "2026-10-20",
+        "best_day": "2026-07-31",
+        "best_day_pct": 29.954614,
+        "worst_day": "2026-07-13",
+        "worst_day_pct": -15.366972,
+        "up_day_ratio_pct": 55.612245,
+        "n_days": 196,
+        "high": 2919000.0,
+        "high_date": "2026-06-22",
+        "low": 677000.0,
+        "low_date": "2026-01-02"
+      },
+      "전체": {
+        "base_date": "2022-12-29",
+        "end_date": "2026-10-22",
+        "base_value": 75000.0,
+        "end_value": 1223000.0,
+        "return_pct": 1530.666667,
+        "ann_vol_pct": 61.494006,
+        "mdd_pct": -58.10209,
+        "mdd_peak_date": "2026-06-22",
+        "mdd_trough_date": "2026-10-20",
+        "best_day": "2026-07-31",
+        "best_day_pct": 29.954614,
+        "worst_day": "2026-07-13",
+        "worst_day_pct": -15.366972,
+        "up_day_ratio_pct": 51.240561,
+        "n_days": 927,
+        "high": 2919000.0,
+        "high_date": "2026-06-22",
+        "low": 75600.0,
+        "low_date": "2023-01-03"
+      }
+    }
+  },
+  "sec_high": {
+    "date": "2026-06-18",
+    "value": 362500.0
+  },
+  "sec_low": {
+    "date": "2024-11-14",
+    "value": 49900.0
+  },
+  "skh_peak": {
+    "date": "2026-06-22",
+    "value": 2919000.0
+  },
+  "crossovers": [
+    {
+      "date": "2023-10-16",
+      "type": "데드 크로스"
+    },
+    {
+      "date": "2023-12-08",
+      "type": "골든 크로스"
+    },
+    {
+      "date": "2024-09-12",
+      "type": "데드 크로스"
+    },
+    {
+      "date": "2025-04-08",
+      "type": "골든 크로스"
+    },
+    {
+      "date": "2025-04-09",
+      "type": "데드 크로스"
+    },
+    {
+      "date": "2025-04-10",
+      "type": "골든 크로스"
+    },
+    {
+      "date": "2026-09-21",
+      "type": "데드 크로스"
+    }
+  ],
+  "above_ma120_pct_by_year": {
+    "2023": 85.306122,
+    "2024": 56.967213,
+    "2025": 73.553719,
+    "2026": 83.673469
+  },
+  "drawdown": {
+    "SEC": {
+      "mdd_pct": -43.166287,
+      "peak_date": "2024-07-09",
+      "trough_date": "2024-11-14",
+      "peak_value": 87800.0,
+      "trough_value": 49900.0,
+      "current_pct": -40.827586
+    },
+    "SKH": {
+      "mdd_pct": -58.10209,
+      "peak_date": "2026-06-22",
+      "trough_date": "2026-10-20",
+      "peak_value": 2919000.0,
+      "trough_value": 1223000.0,
+      "current_pct": -58.10209
+    },
+    "KOSPI": {
+      "mdd_pct": -39.275418,
+      "peak_date": "2026-06-22",
+      "trough_date": "2026-10-22",
+      "peak_value": 9122.178279,
+      "trough_value": 5539.40463,
+      "current_pct": -39.275418
+    }
+  },
+  "volatility": {
+    "sec": {
+      "vol20_max_pct": 139.484943,
+      "vol20_max_date": "2026-07-31",
+      "vol20_min_pct": 13.758246,
+      "vol20_min_date": "2023-07-04",
+      "std_daily_2023_2025_pct": 1.877872,
+      "std_daily_2026_pct": 5.273296,
+      "z_20260731_vs_2023_2025": 14.21189
+    },
+    "skh": {
+      "vol20_max_pct": 165.126729,
+      "vol20_max_date": "2026-08-06",
+      "vol20_min_pct": 19.684685,
+      "vol20_min_date": "2023-05-15",
+      "std_daily_2023_2025_pct": 2.967659,
+      "std_daily_2026_pct": 6.18599
+    },
+    "kospi": {
+      "vol20_max_pct": 103.526302,
+      "vol20_max_date": "2026-07-31",
+      "vol20_min_pct": 8.406811,
+      "vol20_min_date": "2023-05-26",
+      "std_daily_2023_2025_pct": 1.200194,
+      "std_daily_2026_pct": 3.827014
+    }
+  },
+  "extremes": {
+    "sec_count": 20,
+    "sec_with_rest_market_same_dir": 19,
+    "sec_with_rest_market_same_dir_2pct": 14,
+    "sec_idiosyncratic_days": [
+      "2026-05-06",
+      "2026-06-01",
+      "2026-06-24",
+      "2026-08-03",
+      "2026-08-20",
+      "2026-08-24"
+    ]
+  },
+  "yearly_corr": [
+    {
+      "year": 2023,
+      "corr_sec_skh": 0.606065,
+      "corr_sec_ex2": 0.420395,
+      "corr_sec_kospi": 0.673415,
+      "share_two_mean_pct": 24.269532
+    },
+    {
+      "year": 2024,
+      "corr_sec_skh": 0.497508,
+      "corr_sec_ex2": 0.50332,
+      "corr_sec_kospi": 0.753078,
+      "share_two_mean_pct": 25.91401
+    },
+    {
+      "year": 2025,
+      "corr_sec_skh": 0.561277,
+      "corr_sec_ex2": 0.506672,
+      "corr_sec_kospi": 0.742874,
+      "share_two_mean_pct": 24.791808
+    },
+    {
+      "year": 2026,
+      "corr_sec_skh": 0.877936,
+      "corr_sec_ex2": 0.743175,
+      "corr_sec_kospi": 0.946169,
+      "share_two_mean_pct": 45.15089
+    },
+    {
+      "year": "전체",
+      "corr_sec_skh": 0.741124,
+      "corr_sec_ex2": 0.64793,
+      "corr_sec_kospi": 0.882128,
+      "share_two_mean_pct": 29.253771
+    }
+  ],
+  "concentration": {
+    "share_start_pct": 21.965867,
+    "share_start_date": "2023-01-02",
+    "share_2025_end_pct": 34.035329,
+    "share_max_pct": 57.108166,
+    "share_max_date": "2026-06-25",
+    "share_20260622_pct": 55.667978,
+    "share_end_pct": 46.999212,
+    "ratio_start": 6.012053,
+    "ratio_2024_end": 2.508637,
+    "ratio_min": 0.993406,
+    "ratio_min_date": "2026-06-22",
+    "ratio_end": 1.403669,
+    "skh_bigger_days": 2,
+    "skh_bigger_first": "2026-06-22",
+    "skh_bigger_last": "2026-06-23",
+    "sec_mcap_end_trillion": 1254.026761,
+    "skh_mcap_end_trillion": 893.392162,
+    "sec_mcap_start_trillion": 331.322932,
+    "skh_mcap_start_trillion": 55.109779
+  },
+  "month_of_year": [
+    {
+      "month": 1,
+      "n_years": 4,
+      "mean_pct": 8.819168,
+      "median_pct": 4.401827,
+      "up_years": 2,
+      "down_years": 2
+    },
+    {
+      "month": 2,
+      "n_years": 4,
+      "mean_pct": 9.801431,
+      "median_pct": 2.485247,
+      "up_years": 3,
+      "down_years": 1
+    },
+    {
+      "month": 3,
+      "n_years": 4,
+      "mean_pct": 0.288956,
+      "median_pct": 5.832803,
+      "up_years": 3,
+      "down_years": 1
+    },
+    {
+      "month": 4,
+      "n_years": 4,
+      "mean_pct": 6.073975,
+      "median_pct": -0.817744,
+      "up_years": 2,
+      "down_years": 2
+    },
+    {
+      "month": 5,
+      "n_years": 4,
+      "mean_pct": 12.217944,
+      "median_pct": 5.134447,
+      "up_years": 3,
+      "down_years": 1
+    },
+    {
+      "month": 6,
+      "n_years": 4,
+      "mean_pct": 5.943318,
+      "median_pct": 5.884235,
+      "up_years": 4,
+      "down_years": 0
+    },
+    {
+      "month": 7,
+      "n_years": 4,
+      "mean_pct": -0.597127,
+      "median_pct": -0.189657,
+      "up_years": 2,
+      "down_years": 2
+    },
+    {
+      "month": 8,
+      "n_years": 4,
+      "mean_pct": -4.732564,
+      "median_pct": -3.26784,
+      "up_years": 0,
+      "down_years": 4
+    },
+    {
+      "month": 9,
+      "n_years": 4,
+      "mean_pct": 2.164239,
+      "median_pct": 2.755692,
+      "up_years": 3,
+      "down_years": 1
+    },
+    {
+      "month": 10,
+      "n_years": 3,
+      "mean_pct": 7.398635,
+      "median_pct": -2.192982,
+      "up_years": 1,
+      "down_years": 2
+    },
+    {
+      "month": 11,
+      "n_years": 3,
+      "mean_pct": -2.046147,
+      "median_pct": -6.511628,
+      "up_years": 1,
+      "down_years": 2
+    },
+    {
+      "month": 12,
+      "n_years": 3,
+      "mean_pct": 8.429378,
+      "median_pct": 7.82967,
+      "up_years": 2,
+      "down_years": 1
+    }
+  ],
+  "month_of_year_test_p": 0.800412,
+  "month_of_year_unanimous": {
+    "observed": 2,
+    "expected": 1.875,
+    "months": [
+      6,
+      8
+    ]
+  },
+  "monthly_extremes": {
+    "best": {
+      "month": "(np.int64(2026), np.int64(5))",
+      "pct": 43.764172
+    },
+    "worst": {
+      "month": "(np.int64(2026), np.int64(3))",
+      "pct": -22.771363
+    }
+  },
+  "weekday": [
+    {
+      "weekday": "월",
+      "n": 180,
+      "mean_pct": -0.033486,
+      "median_pct": 0.144223,
+      "win_rate_pct": 51.666667,
+      "ci95_low": -0.484086,
+      "ci95_high": 0.417114
+    },
+    {
+      "weekday": "화",
+      "n": 186,
+      "mean_pct": 0.094781,
+      "median_pct": 0.137457,
+      "win_rate_pct": 51.612903,
+      "ci95_low": -0.301493,
+      "ci95_high": 0.491054
+    },
+    {
+      "weekday": "수",
+      "n": 186,
+      "mean_pct": 0.478782,
+      "median_pct": 0.280497,
+      "win_rate_pct": 53.225806,
+      "ci95_low": 0.05869,
+      "ci95_high": 0.898874
+    },
+    {
+      "weekday": "목",
+      "n": 189,
+      "mean_pct": 0.244698,
+      "median_pct": 0.137552,
+      "win_rate_pct": 51.322751,
+      "ci95_low": -0.147437,
+      "ci95_high": 0.636833
+    },
+    {
+      "weekday": "금",
+      "n": 186,
+      "mean_pct": 0.152458,
+      "median_pct": -0.1442,
+      "win_rate_pct": 43.010753,
+      "ci95_low": -0.304714,
+      "ci95_high": 0.60963
+    }
+  ],
+  "weekday_test": {
+    "kruskal_p_all": 0.346655,
+    "kruskal_p_2023_2025": 0.532933
+  },
+  "stl": {
+    "n_months": 45,
+    "period": 12,
+    "seasonal_window": 999,
+    "robust": false,
+    "trend_strength": 0.980283,
+    "seasonal_strength": 0.536491,
+    "seasonal_effect_by_month_pct": {
+      "1": -1.151354,
+      "2": 1.990033,
+      "3": 0.416229,
+      "4": 1.901622,
+      "5": 5.5604,
+      "6": 9.498727,
+      "7": 2.795357,
+      "8": -4.497781,
+      "9": -8.726206,
+      "10": -3.260469,
+      "11": -5.513899,
+      "12": -6.313931
+    },
+    "seasonal_peak_month": 6,
+    "seasonal_trough_month": 9,
+    "trend_change_pct": 453.49902,
+    "resid_std_pct": 7.307829,
+    "year_pair_corr_mean": -0.066576,
+    "year_pair_corr": {
+      "2023-2024": 0.327837,
+      "2023-2025": -0.711996,
+      "2023-2026": 0.157077,
+      "2024-2025": -0.27629,
+      "2024-2026": -0.039414,
+      "2025-2026": 0.143331
+    },
+    "seasonal_2023_2025_vs_full_corr": -0.285914
+  },
+  "forecast": {
+    "summary": [
+      {
+        "h": 1,
+        "method": "drift",
+        "mape_pct": 2.237395,
+        "mae": 3533.019639,
+        "n": 681,
+        "mape_2024": 1.496188,
+        "mape_2025": 1.677185,
+        "mape_2026": 3.860089,
+        "vs_naive": 1.004194
+      },
+      {
+        "h": 1,
+        "method": "ma20",
+        "mape_pct": 5.778424,
+        "mae": 8765.829662,
+        "n": 681,
+        "mape_2024": 3.955023,
+        "mape_2025": 4.445596,
+        "mape_2026": 9.714086,
+        "vs_naive": 2.593489
+      },
+      {
+        "h": 1,
+        "method": "ma60",
+        "mape_pct": 10.876216,
+        "mae": 16373.012726,
+        "n": 681,
+        "mape_2024": 7.641353,
+        "mape_2025": 8.383299,
+        "mape_2026": 18.017714,
+        "vs_naive": 4.881494
+      },
+      {
+        "h": 1,
+        "method": "naive",
+        "mape_pct": 2.228051,
+        "mae": 3523.49486,
+        "n": 681,
+        "mape_2024": 1.488377,
+        "mape_2025": 1.675992,
+        "mape_2026": 3.83871,
+        "vs_naive": 1.0
+      },
+      {
+        "h": 5,
+        "method": "drift",
+        "mape_pct": 4.980297,
+        "mae": 7522.947449,
+        "n": 677,
+        "mape_2024": 3.600879,
+        "mape_2025": 4.019531,
+        "mape_2026": 7.959791,
+        "vs_naive": 1.015011
+      },
+      {
+        "h": 5,
+        "method": "ma20",
+        "mape_pct": 7.362515,
+        "mae": 11229.741507,
+        "n": 677,
+        "mape_2024": 5.015276,
+        "mape_2025": 5.869518,
+        "mape_2026": 12.252733,
+        "vs_naive": 1.500519
+      },
+      {
+        "h": 5,
+        "method": "ma60",
+        "mape_pct": 11.995051,
+        "mae": 18007.067947,
+        "n": 677,
+        "mape_2024": 8.368894,
+        "mape_2025": 9.702645,
+        "mape_2026": 19.531934,
+        "vs_naive": 2.444654
+      },
+      {
+        "h": 5,
+        "method": "naive",
+        "mape_pct": 4.906646,
+        "mae": 7376.514032,
+        "n": 677,
+        "mape_2024": 3.51779,
+        "mape_2025": 4.069979,
+        "mape_2026": 7.740962,
+        "vs_naive": 1.0
+      },
+      {
+        "h": 20,
+        "method": "drift",
+        "mape_pct": 10.541422,
+        "mae": 16084.688082,
+        "n": 662,
+        "mape_2024": 7.23278,
+        "mape_2025": 9.116386,
+        "mape_2026": 17.087826,
+        "vs_naive": 1.049596
+      },
+      {
+        "h": 20,
+        "method": "ma20",
+        "mape_pct": 12.103798,
+        "mae": 18641.729607,
+        "n": 662,
+        "mape_2024": 8.380006,
+        "mape_2025": 10.642571,
+        "mape_2026": 19.275514,
+        "vs_naive": 1.20516
+      },
+      {
+        "h": 20,
+        "method": "ma60",
+        "mape_pct": 15.921913,
+        "mae": 23740.276939,
+        "n": 662,
+        "mape_2024": 11.413377,
+        "mape_2025": 14.28188,
+        "mape_2026": 24.427431,
+        "vs_naive": 1.585325
+      },
+      {
+        "h": 20,
+        "method": "naive",
+        "mape_pct": 10.043309,
+        "mae": 15469.78852,
+        "n": 662,
+        "mape_2024": 6.930529,
+        "mape_2025": 8.884709,
+        "mape_2026": 15.951831,
+        "vs_naive": 1.0
+      }
+    ],
+    "fan": {
+      "last_date": "2026-10-22",
+      "last_close": 214500.0,
+      "sigma_daily_pct": 5.481695,
+      "mu_daily_pct": 0.340351,
+      "vol_window": 60,
+      "h20_lo95": 132663.781173,
+      "h20_hi95": 346818.472933,
+      "h20_lo95_pct": -38.152083,
+      "h20_hi95_pct": 61.686934,
+      "h20_drift": 229609.494445,
+      "h20_drift_pct": 7.044053
+    }
+  }
+}

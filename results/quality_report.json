@@ -1,0 +1,129 @@
+{
+  "basic": {
+    "stocks_rows": 2104,
+    "kospi_rows": 1052,
+    "columns": [
+      "Date",
+      "Code",
+      "Name",
+      "Open",
+      "High",
+      "Low",
+      "Close",
+      "Volume",
+      "Amount",
+      "Changes",
+      "ChangesRatio",
+      "Marcap",
+      "Stocks"
+    ],
+    "fetch_period": [
+      "2022-07-01",
+      "2026-10-22"
+    ],
+    "analysis_period": [
+      "2023-01-02",
+      "2026-10-22"
+    ],
+    "analysis_trading_days": 927,
+    "rows_per_code": {
+      "000660": 1052,
+      "005930": 1052
+    },
+    "trading_days_by_year": {
+      "2023": 245,
+      "2024": 244,
+      "2025": 242,
+      "2026": 196
+    }
+  },
+  "missing": {
+    "stocks": {
+      "Date": 0,
+      "Code": 0,
+      "Name": 0,
+      "Open": 0,
+      "High": 0,
+      "Low": 0,
+      "Close": 0,
+      "Volume": 0,
+      "Amount": 0,
+      "Changes": 0,
+      "ChangesRatio": 0,
+      "Marcap": 0,
+      "Stocks": 0
+    },
+    "kospi": {
+      "Date": 0,
+      "n_constituents": 0,
+      "ret_kospi_pct": 0,
+      "ret_ex2_pct": 0,
+      "mcap_kospi_total": 0,
+      "mcap_kospi_common": 0
+    }
+  },
+  "duplicates": 0,
+  "calendar_aligned": true,
+  "closures": {
+    "weekday_non_trading_days": 67,
+    "explained_by_reference": 67,
+    "unexplained": [],
+    "reference_days_that_traded": []
+  },
+  "error_outliers": {
+    "ohlc_logic_violations": 0,
+    "nonpositive_price_or_volume": 0,
+    "price_limit_violations": 0,
+    "changes_mismatch": 0,
+    "ratio_mismatch": 0,
+    "max_abs_ratio_diff_pctpt": 0.005,
+    "max_abs_daily_change_pct": 29.95,
+    "kospi_ret_abs_max_pct": 17.9042
+  },
+  "statistical_extremes": {
+    "sec": {
+      "count": 20,
+      "by_year": {
+        "2023": 0,
+        "2024": 1,
+        "2025": 0,
+        "2026": 19
+      },
+      "mean_pct": 0.1891,
+      "std_pct": 2.9414,
+      "threshold_abs_pct": 8.82
+    },
+    "skh": {
+      "count": 13,
+      "by_year": {
+        "2023": 0,
+        "2024": 0,
+        "2025": 0,
+        "2026": 13
+      },
+      "mean_pct": 0.3759,
+      "std_pct": 3.8738,
+      "threshold_abs_pct": 11.62
+    },
+    "kospi": {
+      "count": 21,
+      "by_year": {
+        "2023": 0,
+        "2024": 1,
+        "2025": 1,
+        "2026": 19
+      },
+      "mean_pct": 0.119,
+      "std_pct": 2.0548,
+      "threshold_abs_pct": 6.16
+    }
+  },
+  "checkpoints": {
+    "n": 52,
+    "passed": 52,
+    "max_kospi_close_rel_error_pct": 0.171,
+    "max_kospi_change_abs_error_pctpt": 0.011,
+    "stock_values_exact": true
+  },
+  "all_hard_checks_passed": true
+}
