@@ -121,6 +121,10 @@
   "checkpoints": {
     "n": 52,
     "passed": 52,
+    "n_kospi_close": 14,
+    "mean_kospi_close_rel_error_pct": 0.111,
+    "n_kospi_change": 10,
+    "n_stock_items": 25,
     "max_kospi_close_rel_error_pct": 0.171,
     "max_kospi_change_abs_error_pctpt": 0.011,
     "stock_values_exact": true

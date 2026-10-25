@@ -477,6 +477,7 @@
     $("#start-date").min = A_START; $("#start-date").max = A_END;
     $("#end-date").min = A_START; $("#end-date").max = A_END;
     $("#data-ref").textContent = D.meta.data_ref;
+    $("#kospi-err").textContent = D.meta.kospi_max_error_pct.toFixed(2);
 
     $("#period-presets").addEventListener("click", (e) => {
       const b = e.target.closest("button"); if (!b) return;

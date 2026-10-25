@@ -50,6 +50,7 @@ def build(d: pd.DataFrame, res: dict) -> str:
         "analysis_start": C.ANALYSIS_START, "analysis_end": C.ANALYSIS_END, "base_date": C.BASE_DATE,
         "data_ref": C.MARCAP_COMMIT[:7], "kospi_base": C.KOSPI_OFFICIAL_BASE,
         "trading_days_per_year": C.TRADING_DAYS,
+        "kospi_max_error_pct": res["quality"]["checkpoints"]["max_kospi_close_rel_error_pct"],
     }
     # 브라우저 계산이 파이썬 계산과 같은지 확인할 때 쓰는 기준값 (전체 기간)
     out["check"] = {

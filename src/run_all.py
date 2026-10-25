@@ -102,8 +102,8 @@ def compute_results(stocks: pd.DataFrame, kospi: pd.DataFrame, d: pd.DataFrame) 
             "months": [int(m) for m in moy.loc[(moy["up_years"] == moy["n_years"]) | (moy["down_years"] == moy["n_years"]), "month"]],
         },
         "monthly_extremes": {
-            "best": {"month": str(monthly.stack().idxmax()), "pct": float(monthly.stack().max())},
-            "worst": {"month": str(monthly.stack().idxmin()), "pct": float(monthly.stack().min())},
+            "best": {"month": "{}-{:02d}".format(*map(int, monthly.stack().idxmax())), "pct": float(monthly.stack().max())},
+            "worst": {"month": "{}-{:02d}".format(*map(int, monthly.stack().idxmin())), "pct": float(monthly.stack().min())},
         },
         "weekday": frame_records(wd),
         "weekday_test": wd_test,

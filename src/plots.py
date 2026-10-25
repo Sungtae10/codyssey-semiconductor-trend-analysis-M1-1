@@ -266,7 +266,8 @@ def fig_relative_performance(d: pd.DataFrame, res: dict) -> str:
     k_x = res["period"]["KOSPI"]["전체"]["end_value"] / res["period"]["KOSPI"]["전체"]["base_value"]
     header(fig, f"같은 AI 반도체 사이클, 다른 성과: SK하이닉스 {skh_x:.1f}배, 삼성전자 {sec_x:.1f}배, KOSPI {k_x:.1f}배",
            "2022년 마지막 거래일 종가를 100으로 맞춘 누적 지수(로그 눈금). 아래는 두 회사 시가총액의 비율.")
-    footer(fig, "KOSPI(재계산): KOSPI 보통주 전 종목의 전일 시가총액 가중 등락률을 누적한 값 (공식 지수와 차이 0.15% 이내)")
+    err = res["quality"]["checkpoints"]["max_kospi_close_rel_error_pct"]
+    footer(fig, f"KOSPI(재계산): KOSPI 보통주 전 종목의 전일 시가총액 가중 등락률을 누적한 값 (보도된 공식 종가와 차이 최대 {err:.2f}%)")
     return save(fig, "02_relative_performance.png")
 
 

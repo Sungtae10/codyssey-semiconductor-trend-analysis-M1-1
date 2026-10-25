@@ -147,9 +147,15 @@ def run_quality_checks(stocks: pd.DataFrame, kospi: pd.DataFrame, daily: pd.Data
 
     # 7. 교차 출처 대조
     cp = checkpoint_table(stocks, daily)
+    kc = cp[(cp["item"] == "kospi_close") & (cp["date"] != C.BASE_DATE)]   # 기준일은 정의상 오차 0이라 뺀다
+    kd = cp[cp["item"] == "kospi_change_pct"]
     q["checkpoints"] = {
         "n": int(len(cp)),
         "passed": int(cp["pass"].sum()),
+        "n_kospi_close": int(len(kc)),
+        "mean_kospi_close_rel_error_pct": round(float(kc["error"].abs().mean()), 3),
+        "n_kospi_change": int(len(kd)),
+        "n_stock_items": int(cp["item"].str.match(r"(sec|skh)_").sum()),
         "max_kospi_close_rel_error_pct": round(float(cp.loc[cp["item"] == "kospi_close", "error"].abs().max()), 3),
         "max_kospi_change_abs_error_pctpt": round(float(cp.loc[cp["item"] == "kospi_change_pct", "error"].abs().max()), 3),
         "stock_values_exact": bool(cp.loc[cp["item"].str.match(r"(sec|skh)_(close|change_pct)"), "error"].abs().max() == 0),
