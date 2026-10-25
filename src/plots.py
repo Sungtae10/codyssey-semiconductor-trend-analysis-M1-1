@@ -31,10 +31,13 @@ DPI = 150
 # ------------------------------------------------------------------ 공통 스타일
 def _korean_font() -> str:
     available = {f.name for f in font_manager.fontManager.ttflist}
-    for name in ("Malgun Gothic", "AppleGothic", "NanumGothic", "Noto Sans CJK KR", "Noto Sans KR"):
+    # Linux의 Noto Sans CJK 는 여러 글꼴을 한 파일(.ttc)에 묶어 두는데, matplotlib 3.10 미만은 그 첫 이름(JP)만 읽는다.
+    # JP·SC·TC 묶음에도 한글 글자가 모두 들어 있으므로 KR 이름이 없으면 이것들을 쓴다.
+    for name in ("Malgun Gothic", "AppleGothic", "NanumGothic", "Noto Sans CJK KR", "Noto Sans KR",
+                 "Noto Sans CJK JP", "Noto Sans CJK SC", "Noto Sans CJK TC"):
         if name in available:
             return name
-    return "DejaVu Sans"  # 한글 글꼴이 없으면 글자가 네모로 보일 수 있다
+    return "DejaVu Sans"  # 한글 글꼴이 하나도 없으면 한글이 네모 칸으로 나온다
 
 
 def setup_style() -> str:

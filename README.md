@@ -95,9 +95,14 @@ python -m pip install -r requirements.txt
 | 작성 환경 (최신 버전) | 3.13.17 | 3.0.5 | 2.5.3 | 3.11.2 | 1.18.1 | 0.15.0 | 26.0.0 |
 | 하한 버전 환경 (`requirements.txt` 하한 그대로) | 3.10.20 | 2.2.0 | 1.26.0 | 3.9.0 | 1.11.1 | 0.14.1 | 15.0.0 |
 
-하한 버전 환경에서는 GitHub에서 저장소를 새로 내려받아 테스트 27개, `python -m src.fetch_data`, `python -m src.run_all`, 노트북 전체 실행(오류 0개, 그림 8장)을 모두 확인했다. 다시 만든 `data/`·`results/`·`docs/data/` 파일은 저장소에 올린 파일과 바이트 단위까지 같았고, 그림 PNG만 matplotlib 버전에 따라 글자 렌더링이 조금 달라졌다. 그림의 한글 글꼴은 Windows에서 '맑은 고딕', macOS에서 'AppleGothic'을 자동으로 고른다.
+하한 버전 환경에서는 GitHub에서 저장소를 새로 내려받아 테스트 27개, `python -m src.fetch_data`, `python -m src.run_all`, 노트북 전체 실행(오류 0개, 그림 8장)을 모두 확인했다. 다시 만든 `data/`·`results/`·`docs/data/` 파일은 저장소에 올린 파일과 바이트 단위까지 같았고, 그림 PNG만 matplotlib 버전과 글꼴에 따라 글자 모양이 조금 달라졌다. 그림의 한글 글꼴은 Windows에서 '맑은 고딕', macOS에서 'AppleGothic', Linux에서 '나눔고딕'이나 'Noto Sans CJK'를 자동으로 고른다.
 
-**노트북 오류가 날 때:** `cannot import name 'backend2gui'` 오류는 matplotlib 3.8 이하와 IPython 9를 함께 쓸 때 생긴다. `python -m pip install -U matplotlib`로 올린 뒤 커널을 다시 시작한다.
+**문제가 생길 때**
+
+| 증상 | 원인과 해결 |
+|---|---|
+| 노트북에서 `cannot import name 'backend2gui'` 오류 | matplotlib 3.8 이하와 IPython 9를 함께 쓸 때 생긴다. `python -m pip install -U matplotlib`로 올린 뒤 커널을 다시 시작한다 |
+| 그림의 한글이 네모 칸으로 나옴 | 한글 글꼴이 없는 경우다. Linux는 `sudo apt install fonts-nanum` 등으로 글꼴을 설치하고 `~/.cache/matplotlib` 폴더를 지운 뒤 다시 실행한다 |
 
 ## 데이터 출처와 이용 주의
 
