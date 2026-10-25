@@ -2,7 +2,8 @@
 
 점검 항목과 처리 기준
 1. 결측치: 원자료 빈 값 개수 → 0이어야 한다.
-2. 거래일 누락: 데이터에 없는 평일이 모두 KRX 휴장일 참고표에 있는지 → 설명 안 되는 날 0일.
+2. 거래일 누락: 공휴일 달력과 KRX 휴장 규정으로 따로 만든 휴장일 참고표와 두 방향으로 대조
+   → 데이터에 없는데 휴장일이 아닌 날 0일, 휴장일인데 거래된 날 0일.
 3. 중복: (날짜, 종목) 중복 → 0건.
 4. 데이터 오류형 이상치 (발견 시 제외 대상):
    - 가격 논리: 저가 ≤ 시가·종가 ≤ 고가, 가격·거래량 > 0
@@ -10,6 +11,7 @@
    - 일관성: 전일대비(Changes) = 오늘 종가 − 어제 종가, 등락률 = 계산 수익률(반올림 오차 0.005%p 이내)
 5. 통계적 극단값 (유지, 표시만): |z| > 3 인 날 → 실제 시장 사건이므로 삭제하지 않는다.
 6. 교차 출처 대조: 언론 보도의 공식 수치(종가·등락률·시가총액)와 비교.
+   기준일(2022-12-29) KOSPI 종가는 재계산의 출발값이라 대조 개수에서 뺀다.
 """
 from __future__ import annotations
 
@@ -59,9 +61,11 @@ def checkpoint_table(stocks: pd.DataFrame, daily: pd.DataFrame) -> pd.DataFrame:
         else:
             err = ours - official
         passed = abs(round(err, 6)) <= tol + 1e-9
+        # 기준일 KOSPI 종가는 재계산 지수의 출발값이라 정의상 오차가 0이다. 출처 기록용으로만 두고 대조 개수에서 뺀다.
+        is_anchor = item == "kospi_close" and d == pd.Timestamp(C.BASE_DATE)
         rows.append({
-            "date": d.strftime("%Y-%m-%d"), "item": item, "official": official,
-            "ours": round(float(ours), 4), "error": round(float(err), 4),
+            "date": d.strftime("%Y-%m-%d"), "item": item, "role": "기준점(대조 제외)" if is_anchor else "대조",
+            "official": official, "ours": round(float(ours), 4), "error": round(float(err), 4),
             "error_kind": "상대오차(%)" if kind == "rel_pct" else "차이",
             "tolerance": tol, "pass": bool(passed), "source": cp.source_title,
         })
@@ -96,7 +100,9 @@ def run_quality_checks(stocks: pd.DataFrame, kospi: pd.DataFrame, daily: pd.Data
     q["duplicates"] = int(stocks.duplicated(["Date", "Code"]).sum())
     q["calendar_aligned"] = bool(dates_by_code[C.SEC] == dates_by_code[C.SKH] == set(kospi["Date"]))
 
-    # 4. 거래가 없는 평일 = 휴장일인지 확인
+    # 4. 거래가 없는 평일 = 휴장일인지 두 방향으로 확인
+    #    참고표는 데이터와 무관하게 공휴일 달력(holidays.KR)과 KRX 휴장 규정으로 만든 '휴장이어야 하는 평일' 목록이다.
+    #    ① 데이터에 없는 평일이 모두 참고표에 있는가  ② 참고표의 날에 거래가 있었는가
     trading = pd.DatetimeIndex(sorted(dates_by_code[C.SEC]))
     weekdays = pd.bdate_range(a_start, a_end)
     closed = weekdays.difference(trading)
@@ -104,6 +110,8 @@ def run_quality_checks(stocks: pd.DataFrame, kospi: pd.DataFrame, daily: pd.Data
     ref_dates = pd.DatetimeIndex(ref["date"])
     q["closures"] = {
         "weekday_non_trading_days": int(len(closed)),
+        "reference_days": int(len(ref_dates)),
+        "reference_basis": {str(k): int(v) for k, v in ref["basis"].value_counts().items()},
         "explained_by_reference": int(closed.isin(ref_dates).sum()),
         "unexplained": [d.strftime("%Y-%m-%d") for d in closed[~closed.isin(ref_dates)]],
         "reference_days_that_traded": [d.strftime("%Y-%m-%d") for d in ref_dates[ref_dates.isin(trading)]],
@@ -145,20 +153,23 @@ def run_quality_checks(stocks: pd.DataFrame, kospi: pd.DataFrame, daily: pd.Data
         }
     q["statistical_extremes"] = ext
 
-    # 7. 교차 출처 대조
+    # 7. 교차 출처 대조 (기준점 1줄은 출발값이라 개수·오차 통계에서 뺀다)
     cp = checkpoint_table(stocks, daily)
-    kc = cp[(cp["item"] == "kospi_close") & (cp["date"] != C.BASE_DATE)]   # 기준일은 정의상 오차 0이라 뺀다
-    kd = cp[cp["item"] == "kospi_change_pct"]
+    chk = cp[cp["role"] == "대조"]
+    kc = chk[chk["item"] == "kospi_close"]
+    kd = chk[chk["item"] == "kospi_change_pct"]
     q["checkpoints"] = {
-        "n": int(len(cp)),
-        "passed": int(cp["pass"].sum()),
+        "n": int(len(chk)),
+        "passed": int(chk["pass"].sum()),
+        "n_reference_rows": int(len(cp)),
+        "base_anchor_date": C.BASE_DATE,
         "n_kospi_close": int(len(kc)),
         "mean_kospi_close_rel_error_pct": round(float(kc["error"].abs().mean()), 3),
         "n_kospi_change": int(len(kd)),
-        "n_stock_items": int(cp["item"].str.match(r"(sec|skh)_").sum()),
-        "max_kospi_close_rel_error_pct": round(float(cp.loc[cp["item"] == "kospi_close", "error"].abs().max()), 3),
-        "max_kospi_change_abs_error_pctpt": round(float(cp.loc[cp["item"] == "kospi_change_pct", "error"].abs().max()), 3),
-        "stock_values_exact": bool(cp.loc[cp["item"].str.match(r"(sec|skh)_(close|change_pct)"), "error"].abs().max() == 0),
+        "n_stock_items": int(chk["item"].str.match(r"(sec|skh)_").sum()),
+        "max_kospi_close_rel_error_pct": round(float(kc["error"].abs().max()), 3),
+        "max_kospi_change_abs_error_pctpt": round(float(kd["error"].abs().max()), 3),
+        "stock_values_exact": bool(chk.loc[chk["item"].str.match(r"(sec|skh)_(close|change_pct)"), "error"].abs().max() == 0),
     }
 
     hard_ok = (

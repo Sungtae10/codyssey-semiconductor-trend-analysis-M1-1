@@ -76,15 +76,35 @@ class TestReportNumbers(unittest.TestCase):
                     f"{cz['share_end_pct']:.1f}%", f"{cz['share_20260622_pct']:.2f}%",
                     f"{cz['ratio_start']:.1f}배", f"{cz['ratio_2024_end']:.1f}배", f"{cz['ratio_min']:.2f}배", f"{cz['ratio_end']:.2f}배")
 
+    def test_relative_performance(self):
+        rel = self.res["relative"]
+        for p, v in rel["by_year"].items():
+            year = p[:4]
+            self.expect(f"| {pct(v['diff_pctpt'])}p | {pct(v['relative_pct'])} | {v['log_gap_share_pct']:.0f}% |")
+            self.expect(f"{year}년 {v['log_gap_share_pct']:.0f}%")
+        self.expect(f"**{rel['skh_over_sec_multiple']:.1f}배**", f"| {pct(rel['total_relative_pct'])} | 100% |")
+        first, second = rel["split_2026"]["first"], rel["split_2026"]["second"]
+        self.expect(f"SK하이닉스 **{pct(first['skh_pct'])}**, 삼성전자 **{pct(first['sec_pct'])}**",
+                    f"(상대 성과 {pct(first['relative_pct'])})",
+                    f"SK하이닉스 **{pct(second['skh_pct'])}**, 삼성전자 **{pct(second['sec_pct'])}**",
+                    f"(상대 성과 {pct(second['relative_pct'])})",
+                    f"**{first['ratio_start']:.2f}배**(2025년 말)")
+
     def test_calendar_and_bonus(self):
         r = self.res
         self.expect(f"p = {r['month_of_year_test_p']:.2f}", f"p = {r['weekday_test']['kruskal_p_all']:.2f}",
                     f"{r['weekday_test']['kruskal_p_2023_2025']:.2f}",
                     f"평균 {r['month_of_year_unanimous']['expected']:.1f}개", f"실제는 {r['month_of_year_unanimous']['observed']}개")
         s = r["stl"]
-        self.expect(f"**{s['trend_strength']:.2f}**", f"**{s['seasonal_strength']:.2f}**",
-                    f"**{s['year_pair_corr_mean']:.2f}**", f"**{s['seasonal_2023_2025_vs_full_corr']:.2f}**",
-                    f"{s['trend_change_pct']:+.1f}%")
+        seas = {str(k): v for k, v in s["seasonal_effect_by_month_pct"].items()}
+        self.expect(f"추세 강도 **{s['trend_strength']:.2f}**", f"계절성 강도 **{s['seasonal_strength']:.2f}**",
+                    f"계절성 강도는 {s['robust_seasonal_strength']:.2f}",
+                    f"평균 **{s['year_pair_corr_mean']:+.2f}**", f"**{s['seasonal_2023_2025_vs_full_corr']:+.2f}**",
+                    f"6월 {seas['6']:+.1f}%", f"9월 {seas['9']:+.1f}%",
+                    f"{s['trend_last_won']:,.0f}원", f"{s['observed_last_won']:,.0f}원", f"{s['trend_end_gap_pct']:.1f}% 높다",
+                    f"({s['trend_change_pct']:+.1f}%)", f"({s['observed_change_pct']:+.1f}%)")
+        pair = list(s["year_pair_corr"].values())
+        self.expect(f"{min(pair):+.2f} ~ {max(pair):+.2f}")
         f = r["forecast"]["fan"]
         self.expect(f"{f['h20_lo95']:,.0f}원", f"{f['h20_hi95']:,.0f}원", f"{f['h20_lo95_pct']:+.0f}%", f"{f['h20_hi95_pct']:+.0f}%",
                     f"{f['sigma_daily_pct']:.1f}%")
@@ -92,11 +112,21 @@ class TestReportNumbers(unittest.TestCase):
         for m in ("naive", "drift", "ma20", "ma60"):
             for h in (1, 5, 20):
                 self.expect(f"{sm[(sm.method == m) & (sm.h == h)]['mape_pct'].iloc[0]:.1f}%")
+        cov = pd.DataFrame(r["forecast"]["coverage"])
+        c20 = cov[(cov.h == 20) & (cov.level == 95)].iloc[0]
+        c1 = cov[(cov.h == 1) & (cov.level == 95)].iloc[0]
+        self.expect(f"**{c20['coverage_pct']:.1f}%**", f"2024년 {c20['coverage_2024_pct']:.1f}%", f"2025년 {c20['coverage_2025_pct']:.1f}%",
+                    f"2026년 {c20['coverage_2026_pct']:.1f}%", f"위 {c20['above_pct']:.1f}%, 아래 {c20['below_pct']:.1f}%",
+                    f"적중률은 {c1['coverage_pct']:.1f}%")
 
     def test_quality_numbers(self):
         q = self.res["quality"]
+        basis = q["closures"]["reference_basis"]
         self.expect(f"{q['basic']['analysis_trading_days']}거래일", f"{q['closures']['weekday_non_trading_days']}일",
-                    f"{q['checkpoints']['n']}개", f"{q['checkpoints']['max_kospi_close_rel_error_pct']:.2f}%",
+                    f"공휴일 {basis['holidays.KR']}일 + 근로자의 날·연말 휴장 {basis['KRX 규정']}일",
+                    f"휴장일인데 거래된 날은 {len(q['closures']['reference_days_that_traded'])}일",
+                    f"언론 보도 수치 {q['checkpoints']['n']}개", f"**{q['checkpoints']['passed']}개 모두 허용 오차 안**",
+                    f"{q['checkpoints']['max_kospi_close_rel_error_pct']:.2f}%",
                     f"{q['checkpoints']['mean_kospi_close_rel_error_pct']:.2f}%",
                     f"{q['checkpoints']['max_kospi_change_abs_error_pctpt']:.3f}%p",
                     f"{q['checkpoints']['n_stock_items']}개")

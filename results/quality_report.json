@@ -66,6 +66,11 @@
   "calendar_aligned": true,
   "closures": {
     "weekday_non_trading_days": 67,
+    "reference_days": 67,
+    "reference_basis": {
+      "holidays.KR": 61,
+      "KRX 규정": 6
+    },
     "explained_by_reference": 67,
     "unexplained": [],
     "reference_days_that_traded": []
@@ -119,8 +124,10 @@
     }
   },
   "checkpoints": {
-    "n": 52,
-    "passed": 52,
+    "n": 51,
+    "passed": 51,
+    "n_reference_rows": 52,
+    "base_anchor_date": "2022-12-29",
     "n_kospi_close": 14,
     "mean_kospi_close_rel_error_pct": 0.111,
     "n_kospi_change": 10,

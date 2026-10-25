@@ -8,6 +8,7 @@
 5. 낙폭(drawdown): 고점 대비 하락 깊이
 6. 롤링 상관(60일)과 시가총액 쏠림: 동조화
 7. 월별·요일별 집계와 비모수 검정: 계절성(달력 효과) 확인
+8. 상대 성과(비율)와 로그 격차의 연도별 분해: 성과 격차가 언제 벌어지고 좁혀졌는지
 """
 from __future__ import annotations
 
@@ -181,6 +182,43 @@ def concentration_summary(a: pd.DataFrame) -> dict:
         "sec_mcap_start_trillion": float(a["sec_mcap"].iloc[0] / 1e12),
         "skh_mcap_start_trillion": float(a["skh_mcap"].iloc[0] / 1e12),
     }
+
+
+def relative_performance(daily: pd.DataFrame, a: pd.DataFrame) -> dict:
+    """삼성전자 ÷ SK하이닉스 상대 성과.
+
+    %p 차이(삼성전자 수익률 − SK하이닉스 수익률)는 두 종목이 크게 오른 해일수록 커 보이므로,
+    해마다 격차가 얼마나 벌어졌는지는 비율(상대 성과 = (1 + 삼성전자) ÷ (1 + SK하이닉스) − 1)로 잰다.
+    로그 격차 ln(1 + SK하이닉스) − ln(1 + 삼성전자)는 연도별로 더하면 전체 격차가 되므로, 연도별 몫(%)을 낼 수 있다.
+    """
+    years = {}
+    total = 0.0
+    for pname in ("2023", "2024", "2025", "2026YTD"):
+        start, end = PERIODS[pname]
+        sec = period_stats(daily, "SEC", start, end)["return_pct"]
+        skh = period_stats(daily, "SKH", start, end)["return_pct"]
+        log_gap = float(np.log1p(skh / 100) - np.log1p(sec / 100))
+        total += log_gap
+        years[pname] = {"sec_pct": sec, "skh_pct": skh, "diff_pctpt": sec - skh,
+                        "relative_pct": ((1 + sec / 100) / (1 + skh / 100) - 1) * 100, "log_gap": log_gap}
+    for v in years.values():
+        v["log_gap_share_pct"] = v["log_gap"] / total * 100
+
+    # 2026년: 시가총액 비율이 가장 낮았던 날(SK하이닉스가 앞선 날)을 기준으로 앞뒤를 나눈다
+    split = a["mcap_ratio_sec_skh"].idxmin()
+    base = period_stats(daily, "SEC", *PERIODS["2026YTD"])["base_date"]
+    end = a.index[-1]
+
+    def leg(t0, t1):
+        sec = (daily.at[t1, "sec_close"] / daily.at[t0, "sec_close"] - 1) * 100
+        skh = (daily.at[t1, "skh_close"] / daily.at[t0, "skh_close"] - 1) * 100
+        return {"start": t0, "end": t1, "sec_pct": float(sec), "skh_pct": float(skh),
+                "relative_pct": float(((1 + sec / 100) / (1 + skh / 100) - 1) * 100),
+                "ratio_start": float(daily.at[t0, "mcap_ratio_sec_skh"]), "ratio_end": float(daily.at[t1, "mcap_ratio_sec_skh"])}
+
+    return {"by_year": years, "total_log_gap": total, "skh_over_sec_multiple": float(np.exp(total)),
+            "total_relative_pct": float((np.exp(-total) - 1) * 100),
+            "split_2026": {"first": leg(base, split), "second": leg(split, end)}}
 
 
 # ------------------------------------------------------------------ 계절성(달력 효과)

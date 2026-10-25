@@ -79,7 +79,7 @@ python -m pip install -r requirements.txt
 
 | 순서 | 명령 | 하는 일 | 걸리는 시간 |
 |---|---|---|---|
-| 1 | `python -m unittest discover -s tests` | 테스트 21개: 지표 정의, 데이터 품질, 리포트 숫자 감사 | 약 1초 |
+| 1 | `python -m unittest discover -s tests` | 테스트 27개: 지표 정의, 데이터 품질, 리포트 숫자 감사 | 약 1초 |
 | 2 | `python -m src.run_all` | 지표·그림 8장·결과표·대시보드 데이터 재생성 | 약 10초 |
 | 3 | `jupyter notebook analysis.ipynb` → 메뉴에서 전체 실행 | 단계별 확인 (VS Code에서 열어도 된다) | 약 20초 |
 | 4 (선택) | `python -m src.fetch_data` | 원천에서 parquet 5개(약 120MB)를 다시 받아 `data/raw/`를 재생성. 고정 커밋이라 같은 파일이 나온다 | 네트워크에 따라 1~3분 |
@@ -95,7 +95,7 @@ python -m pip install -r requirements.txt
 | 작성 환경 (최신 버전) | 3.13.17 | 3.0.5 | 2.5.3 | 3.11.2 | 1.18.1 | 0.15.0 | 26.0.0 |
 | 하한 버전 환경 (`requirements.txt` 하한 그대로) | 3.10.20 | 2.2.0 | 1.26.0 | 3.9.0 | 1.11.1 | 0.14.1 | 15.0.0 |
 
-하한 버전 환경에서는 GitHub에서 저장소를 새로 내려받아 테스트 21개, `python -m src.fetch_data`, `python -m src.run_all`, 노트북 전체 실행(오류 0개, 그림 8장)을 모두 확인했다. 다시 만든 `data/`·`results/`·`docs/data/` 파일은 저장소에 올린 파일과 바이트 단위까지 같았고, 그림 PNG만 matplotlib 버전에 따라 글자 렌더링이 조금 달라졌다. 그림의 한글 글꼴은 Windows에서 '맑은 고딕', macOS에서 'AppleGothic'을 자동으로 고른다.
+하한 버전 환경에서는 GitHub에서 저장소를 새로 내려받아 테스트 27개, `python -m src.fetch_data`, `python -m src.run_all`, 노트북 전체 실행(오류 0개, 그림 8장)을 모두 확인했다. 다시 만든 `data/`·`results/`·`docs/data/` 파일은 저장소에 올린 파일과 바이트 단위까지 같았고, 그림 PNG만 matplotlib 버전에 따라 글자 렌더링이 조금 달라졌다. 그림의 한글 글꼴은 Windows에서 '맑은 고딕', macOS에서 'AppleGothic'을 자동으로 고른다.
 
 **노트북 오류가 날 때:** `cannot import name 'backend2gui'` 오류는 matplotlib 3.8 이하와 IPython 9를 함께 쓸 때 생긴다. `python -m pip install -U matplotlib`로 올린 뒤 커널을 다시 시작한다.
 

@@ -238,7 +238,7 @@ def fig_relative_performance(d: pd.DataFrame, res: dict) -> str:
     pk_t = pd.Timestamp(res["skh_peak"]["date"])
     pk_v = a.at[pk_t, "skh_idx"]
     dot(ax, pk_t, pk_v, COL["SKH"], size=6.5)
-    note(ax, pk_t, pk_v, f"SK하이닉스 고점 {pk_v / 100:,.1f}배 ({kdate(pk_t)})", dx=-8, dy=4, ha="right", size=8.8)
+    note(ax, pk_t, pk_v, f"SK하이닉스 고점: 기준일의 {pk_v / 100:,.1f}배 ({kdate(pk_t)})", dx=-8, dy=4, ha="right", size=8.8)
 
     # 아래: 시가총액 비율
     ax2.plot(a.index, a["mcap_ratio_sec_skh"], color=COL["ink2"], linewidth=1.7, zorder=3)
@@ -334,10 +334,10 @@ def fig_volatility(d: pd.DataFrame, res: dict) -> str:
         end = pd.Timestamp(f"{year}-12-31") if year != "2026" else pd.Timestamp(C.ANALYSIS_END)
         mid = start + (end - start) / 2
         v = res["period"]["SEC"][key]["ann_vol_pct"]
-        ax.text(mid, 158, f"{year}년 삼성전자 {v:.0f}%", ha="center", va="top", fontsize=9.3, color=COL["ink2"], fontweight="bold")
+        ax.text(mid, 158, f"{year}년 삼성전자 {v:.1f}%", ha="center", va="top", fontsize=9.3, color=COL["ink2"], fontweight="bold")
     vm = res["volatility"]["sec"]
     dot(ax, pd.Timestamp(vm["vol20_max_date"]), vm["vol20_max_pct"], COL["SEC"], size=6.5)
-    note(ax, pd.Timestamp(vm["vol20_max_date"]), vm["vol20_max_pct"], f"최고 {vm['vol20_max_pct']:.0f}% ({kdate(vm['vol20_max_date'])})",
+    note(ax, pd.Timestamp(vm["vol20_max_date"]), vm["vol20_max_pct"], f"최고 {vm['vol20_max_pct']:.1f}% ({kdate(vm['vol20_max_date'])})",
          dx=-8, dy=0, ha="right", size=8.8)
 
     # 아래: 일간 수익률, 급변일 강조
@@ -367,7 +367,7 @@ def fig_volatility(d: pd.DataFrame, res: dict) -> str:
              transform=ax2.transAxes, fontsize=9.5, color=COL["ink2"], fontweight="bold")
     date_axis(ax2)
     ratio = vm["std_daily_2026_pct"] / vm["std_daily_2023_2025_pct"]
-    header(fig, f"2026년 변동성 국면 전환: 하루 변동폭(표준편차)이 2023~2025년의 {ratio:.1f}배",
+    header(fig, f"2026년 변동성 국면 전환: 하루 수익률 표준편차가 2023~2025년의 {ratio:.1f}배",
            "위: 최근 20거래일 수익률의 표준편차를 연환산한 값. 아래: 삼성전자 하루 수익률 막대.")
     footer(fig, "z = (그날 수익률 − 분석 기간 평균) ÷ 분석 기간 표준편차. 급변일은 실제 시장 사건이라 지우지 않고 표시만 했다.")
     return save(fig, "04_volatility_regime.png")
@@ -417,7 +417,7 @@ def fig_coupling(d: pd.DataFrame, res: dict) -> str:
         dot(ax2, t, v, COL["ink"], size=5.5)
         note(ax2, t, v, text, dx=dx, dy=dy, ha=ha, size=8.8)
     date_axis(ax2)
-    header(fig, f"두 종목이 KOSPI의 절반 가까이 되자 함께 움직였다: 삼성전자·SK하이닉스 상관 {yc[2024]['corr_sec_skh']:.2f}(2024) → {yc[2026]['corr_sec_skh']:.2f}(2026)",
+    header(fig, f"쏠림과 동조화가 같은 해에 커졌다: 두 종목 비중 최고 {cz['share_max_pct']:.1f}%, 상관 {yc[2024]['corr_sec_skh']:.2f}(2024) → {yc[2026]['corr_sec_skh']:.2f}(2026)",
            "위: 최근 60거래일 하루 수익률의 상관계수. 아래: KOSPI 전체 시가총액(우선주 포함)에서 두 회사 보통주가 차지하는 비중.")
     footer(fig, "'나머지 시장'은 두 종목을 뺀 KOSPI 보통주의 시가총액 가중 수익률이다. 두 종목 비중이 커질수록 KOSPI와의 상관이 저절로 높아지는 효과를 빼려고 썼다.")
     return save(fig, "05_coupling_concentration.png")
@@ -481,7 +481,7 @@ def fig_calendar(d: pd.DataFrame, res: dict, monthly: pd.DataFrame, weekday: pd.
     un = res["month_of_year_unanimous"]
     header(fig, f"달력 효과는 확인되지 않았다: 월별 차이 p = {p_m:.2f}, 요일별 차이 p = {p_w:.2f}",
            f"'6월은 매년 상승, 8월은 매년 하락'처럼 보이는 달이 {un['observed']}개지만, 동전 던지기처럼 무작위여도 평균 {un['expected']:.1f}개는 생긴다.")
-    footer(fig, "검정: Kruskal–Wallis(순위 기반, 극단값에 덜 흔들림). 월별 검정은 2026년 10월(부분 월)을 뺀 45개월로 계산했다.")
+    footer(fig, "검정: Kruskal-Wallis(순위 기반, 극단값에 덜 흔들림). 월별 검정은 2026년 10월(부분 월)을 뺀 45개월로 계산했다.")
     return save(fig, "06_calendar_effects.png")
 
 
@@ -507,6 +507,11 @@ def fig_stl(parts: pd.DataFrame, info: dict) -> str:
     ax1.legend(loc="upper left")
     ax1.text(0.0, 1.04, f"관측값과 추세 · 추세 강도 F_T = {info['trend_strength']:.2f}", transform=ax1.transAxes,
              fontsize=9.5, color=COL["ink2"], fontweight="bold")
+    # 끝점 효과: 마지막 달 추세가 실제 월평균보다 높게 남는다
+    last_t = parts.index[-1]
+    dot(ax1, last_t, trend.iloc[-1], BLUE_RAMP["650"], size=6)
+    note(ax1, last_t, trend.iloc[-1], f"끝점 효과 ({last_t.year}.{last_t.month})\n추세 {trend.iloc[-1] / 10000:,.1f}만 vs 실제 월평균 {obs.iloc[-1] / 10000:,.1f}만",
+         dx=-110, dy=-6, ha="right", va="top", size=8.6, leader=True)
 
     resid = (np.exp(parts["resid"]) - 1) * 100
     ax3.bar(parts.index, resid, width=20, color=COL["axis"], linewidth=0)
@@ -534,17 +539,18 @@ def fig_stl(parts: pd.DataFrame, info: dict) -> str:
     ax2.yaxis.set_major_formatter(FuncFormatter(lambda v, _p: f"{v:.0f}%"))
     ax2.legend(loc="lower left", fontsize=8.6)
     ax2.text(0.0, 1.022, "계절 성분 vs 해마다 실제 모양", transform=ax2.transAxes, fontsize=9.5, color=COL["ink2"], fontweight="bold")
-    ax2.text(0.02, 0.97, f"계절성 강도 F_S = {info['seasonal_strength']:.2f}\n연도 간 모양 상관 평균 {info['year_pair_corr_mean']:+.2f}\n"
+    ax2.text(0.02, 0.97, f"계절성 강도 F_S = {info['seasonal_strength']:.2f}\n해마다 실제 모양끼리의 상관 평균 {info['year_pair_corr_mean']:+.2f}\n"
                          f"2023~25년만으로 추정한 모양과의 상관 {info['seasonal_2023_2025_vs_full_corr']:+.2f}",
              transform=ax2.transAxes, fontsize=8.8, color=COL["ink"], va="top")
-    header(fig, f"STL 분해: 추세가 대부분을 설명하고(F_T {info['trend_strength']:.2f}), 계절 모양은 해마다 반복되지 않았다",
-           "월평균 로그 종가(2023.1~2026.9, 45개월)를 추세 + 12개월 계절성 + 나머지로 분해. 계절 모양은 '매년 같음'으로 고정해 추정.")
-    footer(fig, "강도 지표: F = 1 − Var(나머지) ÷ Var(성분 + 나머지). 연도 간 모양 상관이 0 근처·음수면 '같은 달에 같은 일이 반복된다'는 근거가 없다는 뜻이다.")
+    header(fig, f"STL 분해: 추세가 대부분을 설명하고(F_T {info['trend_strength']:.2f}), 계절성은 약하고(F_S {info['seasonal_strength']:.2f}) 반복되지 않았다",
+           "월평균 로그 종가(2023.1~2026.9, 45개월)를 추세 + 12개월 계절성 + 나머지로 분해. 계절 모양은 매년 같다고 고정(seasonal_deg=0).")
+    footer(fig, "강도 지표: F = 1 − Var(나머지) ÷ Var(성분 + 나머지). 해마다 실제 모양끼리의 상관이 0 근처거나 제각각이면 '같은 달에 같은 일이 반복된다'는 근거가 없다는 뜻이다.")
     return save(fig, "07_stl_decomposition.png")
 
 
 # ------------------------------------------------------------------ 8. 베이스라인 예측 (보너스)
-def fig_forecast(d: pd.DataFrame, summary: pd.DataFrame, fan: pd.DataFrame, finfo: dict) -> str:
+def fig_forecast(d: pd.DataFrame, summary: pd.DataFrame, fan: pd.DataFrame, finfo: dict,
+                 coverage: pd.DataFrame | None = None) -> str:
     from .advanced import METHOD_LABELS, METHODS, HORIZONS
     fig = plt.figure(figsize=(12, 7.8))
     gs_top = fig.add_gridspec(1, 3, wspace=0.08, left=0.15, right=0.975, top=0.86, bottom=0.585)
@@ -560,7 +566,7 @@ def fig_forecast(d: pd.DataFrame, summary: pd.DataFrame, fan: pd.DataFrame, finf
         ys = np.arange(len(order))[::-1]
         for y, m in zip(ys, order):
             v = s.at[m, "mape_pct"]
-            is_best = m == s["mape_pct"].idxmin()
+            is_best = round(v, 1) == round(s["mape_pct"].min(), 1)   # 표시 자릿수에서 같으면 함께 강조(동률)
             ax.plot([0, v], [y, y], color=COL["grid"], linewidth=2.2, zorder=1)
             ax.plot([v], [y], marker="o", markersize=8, color=COL["SEC"] if is_best else COL["muted"],
                     markeredgecolor=COL["surface"], markeredgewidth=1.5, zorder=3)
@@ -594,7 +600,12 @@ def fig_forecast(d: pd.DataFrame, summary: pd.DataFrame, fan: pd.DataFrame, finf
     ax.text(0.0, 1.03, f"{kdate(finfo['last_date'])} 이후 20거래일 예측 범위 · 최근 60일 하루 변동성 {finfo['sigma_daily_pct']:.1f}%가 그대로라고 가정",
             transform=ax.transAxes, fontsize=9.5, color=COL["ink2"], fontweight="bold")
     best20 = summary[(summary["h"] == 20)].set_index("method")["mape_pct"]
-    header(fig, f"가장 단순한 예측이 가장 정확했다: 20거래일 뒤 평균 오차 Naive {best20['naive']:.1f}% vs 60일 이동평균 {best20['ma60']:.1f}%",
+    header(fig, f"이동평균 예측은 단순한 예측보다 오차가 컸다: 20거래일 뒤 Naive {best20['naive']:.1f}% · Drift {best20['drift']:.1f}% · 60일선 {best20['ma60']:.1f}%",
            "롤링 원점 백테스트(예측 시점 2024-01-02~, 시점마다 1·5·20거래일 뒤 종가 예측). 점이 왼쪽일수록 오차(MAPE)가 작다.")
-    footer(fig, "MAPE = |예측 − 실제| ÷ 실제의 평균. 예측 구간은 랜덤워크·변동성 일정 가정의 결과일 뿐 실제 확률을 보장하지 않는다. 투자 권유가 아니다.")
+    cov_text = "예측 구간은 랜덤워크·변동성 일정 가정의 결과일 뿐 실제 확률을 보장하지 않는다."
+    if coverage is not None:
+        c = coverage[(coverage["h"] == 20) & (coverage["level"] == 95)].iloc[0]
+        cov_text = (f"같은 방법으로 과거에 만든 95% 구간에 20거래일 뒤 실제 종가가 들어간 비율은 {c['coverage_pct']:.1f}%로 95%에 못 미쳤다"
+                    f"(벗어난 쪽: 위 {c['above_pct']:.1f}%, 아래 {c['below_pct']:.1f}%).")
+    footer(fig, f"MAPE = |예측 − 실제| ÷ 실제의 평균. {cov_text} 투자 권유가 아니다.")
     return save(fig, "08_baseline_forecast.png")

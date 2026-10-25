@@ -76,6 +76,11 @@
     "calendar_aligned": true,
     "closures": {
       "weekday_non_trading_days": 67,
+      "reference_days": 67,
+      "reference_basis": {
+        "holidays.KR": 61,
+        "KRX 규정": 6
+      },
       "explained_by_reference": 67,
       "unexplained": [],
       "reference_days_that_traded": []
@@ -129,8 +134,10 @@
       }
     },
     "checkpoints": {
-      "n": 52,
-      "passed": 52,
+      "n": 51,
+      "passed": 51,
+      "n_reference_rows": 52,
+      "base_anchor_date": "2022-12-29",
       "n_kospi_close": 14,
       "mean_kospi_close_rel_error_pct": 0.111,
       "n_kospi_change": 10,
@@ -636,6 +643,65 @@
     "sec_mcap_start_trillion": 331.322932,
     "skh_mcap_start_trillion": 55.109779
   },
+  "relative": {
+    "by_year": {
+      "2023": {
+        "sec_pct": 41.952984,
+        "skh_pct": 88.666667,
+        "diff_pctpt": -46.713683,
+        "relative_pct": -24.759903,
+        "log_gap": 0.284486,
+        "log_gap_share_pct": 19.810482
+      },
+      "2024": {
+        "sec_pct": -32.229299,
+        "skh_pct": 22.897527,
+        "diff_pctpt": -55.126826,
+        "relative_pct": -44.855928,
+        "log_gap": 0.595221,
+        "log_gap_share_pct": 41.448852
+      },
+      "2025": {
+        "sec_pct": 125.37594,
+        "skh_pct": 274.353076,
+        "diff_pctpt": -148.977137,
+        "relative_pct": -39.795889,
+        "log_gap": 0.50743,
+        "log_gap_share_pct": 35.335405
+      },
+      "2026YTD": {
+        "sec_pct": 78.899083,
+        "skh_pct": 87.864823,
+        "diff_pctpt": -8.965741,
+        "relative_pct": -4.772443,
+        "log_gap": 0.048901,
+        "log_gap_share_pct": 3.405261
+      }
+    },
+    "total_log_gap": 1.436037,
+    "skh_over_sec_multiple": 4.204003,
+    "total_relative_pct": -76.213148,
+    "split_2026": {
+      "first": {
+        "start": "2025-12-30",
+        "end": "2026-06-22",
+        "sec_pct": 194.829024,
+        "skh_pct": 348.387097,
+        "relative_pct": -34.246764,
+        "ratio_start": 1.497616,
+        "ratio_end": 0.993406
+      },
+      "second": {
+        "start": "2026-06-22",
+        "end": "2026-10-22",
+        "sec_pct": -39.321075,
+        "skh_pct": -58.10209,
+        "relative_pct": 44.82566,
+        "ratio_start": 0.993406,
+        "ratio_end": 1.403669
+      }
+    }
+  },
   "month_of_year": [
     {
       "month": 1,
@@ -808,37 +874,45 @@
     "n_months": 45,
     "period": 12,
     "seasonal_window": 999,
+    "seasonal_deg": 0,
     "robust": false,
-    "trend_strength": 0.980283,
-    "seasonal_strength": 0.536491,
+    "trend_strength": 0.969178,
+    "seasonal_strength": 0.281974,
+    "robust_trend_strength": 0.953161,
+    "robust_seasonal_strength": 0.146123,
     "seasonal_effect_by_month_pct": {
-      "1": -1.151354,
-      "2": 1.990033,
-      "3": 0.416229,
-      "4": 1.901622,
-      "5": 5.5604,
-      "6": 9.498727,
-      "7": 2.795357,
-      "8": -4.497781,
-      "9": -8.726206,
-      "10": -3.260469,
-      "11": -5.513899,
-      "12": -6.313931
+      "1": 0.403735,
+      "2": 3.508313,
+      "3": 1.874943,
+      "4": 3.323162,
+      "5": 6.938086,
+      "6": 10.80144,
+      "7": 3.875532,
+      "8": -3.664243,
+      "9": -8.128549,
+      "10": -3.599399,
+      "11": -6.186089,
+      "12": -7.209464
     },
     "seasonal_peak_month": 6,
     "seasonal_trough_month": 9,
-    "trend_change_pct": 453.49902,
-    "resid_std_pct": 7.307829,
-    "year_pair_corr_mean": -0.066576,
+    "trend_change_pct": 471.860667,
+    "observed_change_pct": 334.926068,
+    "last_month": "2026-09-01",
+    "trend_last_won": 338066.619449,
+    "observed_last_won": 263095.913837,
+    "trend_end_gap_pct": 28.49558,
+    "resid_std_pct": 9.098878,
+    "year_pair_corr_mean": 0.113658,
     "year_pair_corr": {
-      "2023-2024": 0.327837,
-      "2023-2025": -0.711996,
-      "2023-2026": 0.157077,
-      "2024-2025": -0.27629,
-      "2024-2026": -0.039414,
-      "2025-2026": 0.143331
+      "2023-2024": 0.620643,
+      "2023-2025": -0.511758,
+      "2023-2026": 0.670772,
+      "2024-2025": -0.189155,
+      "2024-2026": 0.021673,
+      "2025-2026": 0.069774
     },
-    "seasonal_2023_2025_vs_full_corr": -0.285914
+    "seasonal_2023_2025_vs_full_corr": -0.169657
   },
   "forecast": {
     "summary": [
@@ -987,6 +1061,74 @@
       "h20_hi95_pct": 61.686934,
       "h20_drift": 229609.494445,
       "h20_drift_pct": 7.044053
-    }
+    },
+    "coverage": [
+      {
+        "h": 1,
+        "level": 80,
+        "coverage_pct": 78.56094,
+        "above_pct": 12.334802,
+        "below_pct": 9.104258,
+        "n": 681,
+        "coverage_2024_pct": 79.918033,
+        "coverage_2025_pct": 77.272727,
+        "coverage_2026_pct": 78.461538
+      },
+      {
+        "h": 1,
+        "level": 95,
+        "coverage_pct": 92.951542,
+        "above_pct": 4.111601,
+        "below_pct": 2.936858,
+        "n": 681,
+        "coverage_2024_pct": 93.032787,
+        "coverage_2025_pct": 94.214876,
+        "coverage_2026_pct": 91.282051
+      },
+      {
+        "h": 5,
+        "level": 80,
+        "coverage_pct": 78.138848,
+        "above_pct": 13.146233,
+        "below_pct": 8.714919,
+        "n": 677,
+        "coverage_2024_pct": 76.639344,
+        "coverage_2025_pct": 76.446281,
+        "coverage_2026_pct": 82.198953
+      },
+      {
+        "h": 5,
+        "level": 95,
+        "coverage_pct": 92.614476,
+        "above_pct": 4.579025,
+        "below_pct": 2.806499,
+        "n": 677,
+        "coverage_2024_pct": 93.442623,
+        "coverage_2025_pct": 88.842975,
+        "coverage_2026_pct": 96.335079
+      },
+      {
+        "h": 20,
+        "level": 80,
+        "coverage_pct": 74.924471,
+        "above_pct": 18.731118,
+        "below_pct": 6.344411,
+        "n": 662,
+        "coverage_2024_pct": 77.868852,
+        "coverage_2025_pct": 71.487603,
+        "coverage_2026_pct": 75.568182
+      },
+      {
+        "h": 20,
+        "level": 95,
+        "coverage_pct": 88.670695,
+        "above_pct": 9.365559,
+        "below_pct": 1.963746,
+        "n": 662,
+        "coverage_2024_pct": 90.983607,
+        "coverage_2025_pct": 81.818182,
+        "coverage_2026_pct": 94.886364
+      }
+    ]
   }
 }

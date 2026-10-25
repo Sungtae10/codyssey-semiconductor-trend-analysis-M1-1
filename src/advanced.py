@@ -15,6 +15,8 @@
         ma20  : 최근 20거래일 평균 종가
         ma60  : 최근 60거래일 평균 종가
     롤링 원점 백테스트: 매 거래일을 예측 시점으로 삼아 h일 뒤 종가를 맞혀 보고 MAPE를 잰다.
+    적중률 점검: 앞으로 20거래일 예측 범위(future_fan)와 같은 방법으로 과거 매 거래일 구간을 만들어,
+    실제 종가가 그 구간에 들어간 비율이 구간의 확률(80%, 95%)과 맞는지 확인한다.
 """
 from __future__ import annotations
 
@@ -45,11 +47,14 @@ def _strengths(trend: pd.Series, seasonal: pd.Series, resid: pd.Series) -> tuple
     return float(f_t), float(f_s)
 
 
-def _fit_stl(y: pd.Series):
+def _fit_stl(y: pd.Series, robust: bool = False):
     # 완결된 연도가 3~4개뿐이라 계절 모양이 해마다 바뀌도록 두면 잡음까지 계절성으로 흡수한다.
-    # 그래서 seasonal=999(사실상 '매년 같은 모양' 고정)로 두고, robust=False 로 맞춘다.
-    # (robust=True 는 이 짧은 표본에서 절반 가까운 달의 나머지를 0으로 만들어 강도 지표를 왜곡했다)
-    return STL(y, period=12, seasonal=999, robust=False).fit()
+    # 그래서 계절 모양을 '매년 같음'으로 고정한다.
+    #   seasonal=999   : 같은 달 값들을 사실상 전 기간에 걸쳐 평활
+    #   seasonal_deg=0 : 그 평활을 상수(평균)로. statsmodels 기본값 seasonal_deg=1 이면 같은 달 값이
+    #                    해마다 직선으로 바뀔 수 있어 '고정'이 아니다(독립 검토에서 발견해 고침).
+    # robust=False 가 기본이다. robust=True 는 민감도 점검으로만 함께 계산한다.
+    return STL(y, period=12, seasonal=999, seasonal_deg=0, robust=robust).fit()
 
 
 def stl_decompose(daily: pd.DataFrame, col: str = "sec_close") -> tuple[pd.DataFrame, dict]:
@@ -58,6 +63,8 @@ def stl_decompose(daily: pd.DataFrame, col: str = "sec_close") -> tuple[pd.DataF
     parts = pd.DataFrame({"observed": y, "trend": res.trend, "seasonal": res.seasonal, "resid": res.resid})
     f_t, f_s = _strengths(parts["trend"], parts["seasonal"], parts["resid"])
     seas_by_month = parts["seasonal"].groupby(parts.index.month).mean()
+    res_robust = _fit_stl(y, robust=True)
+    f_t_rob, f_s_rob = _strengths(res_robust.trend, res_robust.seasonal, res_robust.resid)
 
     # 반복성 점검 1: 추세를 뺀 월별 값이 해마다 비슷한 모양인가 (연도 쌍별 상관의 평균)
     detrended = parts["observed"] - parts["trend"]
@@ -70,11 +77,19 @@ def stl_decompose(daily: pd.DataFrame, col: str = "sec_close") -> tuple[pd.DataF
     seas_pre = res_pre.seasonal.groupby(res_pre.seasonal.index.month).mean()
 
     info = {
-        "n_months": int(len(y)), "period": 12, "seasonal_window": 999, "robust": False,
+        "n_months": int(len(y)), "period": 12, "seasonal_window": 999, "seasonal_deg": 0, "robust": False,
         "trend_strength": f_t, "seasonal_strength": f_s,
+        "robust_trend_strength": f_t_rob, "robust_seasonal_strength": f_s_rob,
         "seasonal_effect_by_month_pct": {int(m): float((np.exp(v) - 1) * 100) for m, v in seas_by_month.items()},
         "seasonal_peak_month": int(seas_by_month.idxmax()), "seasonal_trough_month": int(seas_by_month.idxmin()),
+        # 추세 성분의 첫 달 → 마지막 달 변화. 끝부분은 추세가 직전 급등을 따라 실제보다 높게 남는
+        # '끝점 효과'가 있어, 실제 월평균 변화(observed_change_pct)와 함께 본다.
         "trend_change_pct": float((np.exp(parts["trend"].iloc[-1] - parts["trend"].iloc[0]) - 1) * 100),
+        "observed_change_pct": float((np.exp(parts["observed"].iloc[-1] - parts["observed"].iloc[0]) - 1) * 100),
+        "last_month": parts.index[-1],
+        "trend_last_won": float(np.exp(parts["trend"].iloc[-1])),
+        "observed_last_won": float(np.exp(parts["observed"].iloc[-1])),
+        "trend_end_gap_pct": float((np.exp(parts["trend"].iloc[-1] - parts["observed"].iloc[-1]) - 1) * 100),
         "resid_std_pct": float(parts["resid"].std() * 100),
         "year_pair_corr_mean": float(np.mean(pairs)),
         "year_pair_corr": {f"{corr.index[i]}-{corr.columns[j]}": float(corr.iloc[i, j])
@@ -155,3 +170,32 @@ def future_fan(daily: pd.DataFrame, col: str = "sec_close", horizon: int = 20, v
             "h20_drift": float(fan["drift"].iloc[-1]),
             "h20_drift_pct": float((fan["drift"].iloc[-1] / last - 1) * 100)}
     return fan, info
+
+
+def fan_coverage(daily: pd.DataFrame, col: str = "sec_close", start: str = "2024-01-02", vol_window: int = 60) -> pd.DataFrame:
+    """future_fan 과 같은 방법(오늘 종가 중심, 최근 60일 변동성)으로 과거 매 거래일 예측 구간을 만들고,
+    h일 뒤 실제 종가가 구간 안에 들어간 비율(적중률)을 잰다. 구간이 말하는 확률(80%, 95%)과 비교하려는 점검이다."""
+    s = daily[col].dropna()
+    close = s.to_numpy(dtype=float)
+    logret = np.r_[np.nan, np.diff(np.log(close))]
+    dates = s.index
+    first = int(np.searchsorted(dates, pd.Timestamp(start)))
+    rows = []
+    for h in HORIZONS:
+        for t in range(max(first, 250), len(close) - h):
+            sigma = np.std(logret[t - vol_window + 1: t + 1], ddof=1)
+            for z, level in ((1.2816, 80), (1.96, 95)):
+                lo = close[t] * np.exp(-z * sigma * np.sqrt(h))
+                hi = close[t] * np.exp(z * sigma * np.sqrt(h))
+                actual = close[t + h]
+                rows.append({"h": h, "level": level, "origin_year": dates[t].year,
+                             "inside": lo <= actual <= hi, "above": actual > hi, "below": actual < lo})
+    r = pd.DataFrame(rows)
+    out = r.groupby(["h", "level"]).agg(coverage_pct=("inside", "mean"), above_pct=("above", "mean"),
+                                        below_pct=("below", "mean"), n=("inside", "size"))
+    by_year = r.groupby(["h", "level", "origin_year"])["inside"].mean().unstack("origin_year")
+    by_year.columns = [f"coverage_{c}_pct" for c in by_year.columns]
+    out = out.join(by_year)
+    pct_cols = [c for c in out.columns if c.endswith("_pct")]
+    out[pct_cols] = out[pct_cols] * 100
+    return out.reset_index()

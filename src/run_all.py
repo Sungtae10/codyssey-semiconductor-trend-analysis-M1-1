@@ -72,6 +72,7 @@ def compute_results(stocks: pd.DataFrame, kospi: pd.DataFrame, d: pd.DataFrame) 
     bt = A.backtest(d)
     bt_sum = A.backtest_summary(bt)
     fan, fan_info = A.future_fan(d)
+    coverage = A.fan_coverage(d)
 
     res = {
         "meta": {"analysis_period": [C.ANALYSIS_START, C.ANALYSIS_END], "base_date": C.BASE_DATE,
@@ -93,6 +94,7 @@ def compute_results(stocks: pd.DataFrame, kospi: pd.DataFrame, d: pd.DataFrame) 
         },
         "yearly_corr": frame_records(yearly_corr),
         "concentration": M.concentration_summary(a),
+        "relative": M.relative_performance(d, a),
         "month_of_year": frame_records(moy),
         "month_of_year_test_p": M.month_of_year_test(monthly),
         # 같은 달이 모든 해에 같은 방향(전부 상승 또는 전부 하락)인 경우: 실제 개수 vs 무작위(50:50) 기대 개수
@@ -108,15 +110,15 @@ def compute_results(stocks: pd.DataFrame, kospi: pd.DataFrame, d: pd.DataFrame) 
         "weekday": frame_records(wd),
         "weekday_test": wd_test,
         "stl": stl_info,
-        "forecast": {"summary": frame_records(bt_sum), "fan": fan_info},
+        "forecast": {"summary": frame_records(bt_sum), "fan": fan_info, "coverage": frame_records(coverage)},
     }
     tables = {"period_summary": ps, "crossovers": cx, "extreme_days": ext.reset_index(),
               "yearly_correlation": yearly_corr, "monthly_returns_sec": monthly.reset_index(),
               "month_of_year_sec": moy, "weekday_sec": wd, "checkpoint_validation": cp,
               "stl_components": parts.reset_index(names="month"), "forecast_backtest_summary": bt_sum,
-              "forecast_fan": fan}
+              "forecast_fan": fan, "forecast_interval_coverage": coverage}
     extras = {"monthly": monthly, "weekday": wd, "parts": parts, "bt_sum": bt_sum, "fan": fan, "fan_info": fan_info,
-              "stl_info": stl_info, "q": q, "cp": cp}
+              "coverage": coverage, "stl_info": stl_info, "q": q, "cp": cp}
     return res, {"tables": tables, **extras}
 
 
@@ -141,7 +143,7 @@ def make_plots(d: pd.DataFrame, res: dict, extras: dict) -> list[str]:
         P.fig_coupling(d, res),
         P.fig_calendar(d, res, extras["monthly"], extras["weekday"]),
         P.fig_stl(extras["parts"], extras["stl_info"]),
-        P.fig_forecast(d, extras["bt_sum"], extras["fan"], extras["fan_info"]),
+        P.fig_forecast(d, extras["bt_sum"], extras["fan"], extras["fan_info"], extras["coverage"]),
     ]
 
 

@@ -41,6 +41,12 @@ class TestRawData(unittest.TestCase):
         c = self.q["closures"]
         self.assertEqual(c["weekday_non_trading_days"], 67)
         self.assertEqual(c["unexplained"], [])
+
+    def test_no_trading_on_reference_holidays(self):
+        # 참고표는 데이터와 무관하게 공휴일 달력 + KRX 규정으로 만든다. 반대 방향 대조.
+        c = self.q["closures"]
+        self.assertEqual(c["reference_days"], 67)
+        self.assertEqual(c["reference_basis"], {"holidays.KR": 61, "KRX 규정": 6})
         self.assertEqual(c["reference_days_that_traded"], [])
 
     def test_no_data_error_outliers(self):
@@ -54,6 +60,12 @@ class TestRawData(unittest.TestCase):
         self.assertEqual(cp["passed"], cp["n"])
         self.assertTrue(cp["stock_values_exact"])
         self.assertLess(cp["max_kospi_close_rel_error_pct"], 0.2)
+
+    def test_base_anchor_is_not_counted_as_a_check(self):
+        cp = self.q["checkpoints"]
+        self.assertEqual((cp["n_reference_rows"], cp["n"]), (52, 51))
+        anchor = self.cp[self.cp["role"] != "대조"]
+        self.assertEqual(anchor[["date", "item"]].values.tolist(), [[C.BASE_DATE, "kospi_close"]])
 
     def test_all_hard_checks(self):
         self.assertTrue(self.q["all_hard_checks_passed"])
