@@ -28,6 +28,7 @@ codyssey-semiconductor-trend-analysis-M1-1/
 ├── REPORT.md                  분석 리포트 (미션 필수 결과물)
 ├── analysis.ipynb             노트북: 데이터 확인 → 정제 → 지표 → 그림 → 보너스 (출력 포함)
 ├── DASHBOARD.md               대시보드 실행 방법과 기간·조건 변경 시나리오
+├── index.html                 GitHub Pages 첫 주소에서 대시보드(docs/)로 넘겨 주는 연결 페이지
 ├── requirements.txt           의존성 목록
 ├── src/                       분석 코드 (노트북과 스크립트가 같은 함수를 쓴다)
 │   ├── config.py              기간·창 길이·경로·색 설정
@@ -46,7 +47,7 @@ codyssey-semiconductor-trend-analysis-M1-1/
 │   └── manifest.json          원천 커밋·파일 해시·행 수
 ├── images/                    리포트 그림 (01~08)
 ├── results/                   metrics.json, 품질 점검 결과, 결과표 CSV
-├── docs/                      웹 대시보드 (GitHub Pages가 이 폴더를 배포)
+├── docs/                      웹 대시보드 (GitHub Pages로 공개)
 ├── tests/                     단위 테스트, 데이터 품질 테스트, 리포트 숫자 감사
 └── tools/                     휴장일 표 생성, 대시보드 자동 점검, 리포트 표 생성
 ```

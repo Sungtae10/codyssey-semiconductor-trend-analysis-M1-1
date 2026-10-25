@@ -1,6 +1,6 @@
 # 웹 대시보드: 삼성전자 트렌드 탐색기 (보너스 과제)
 
-- **배포 주소:** <https://sungtae10.github.io/codyssey-semiconductor-trend-analysis-M1-1/> (GitHub Pages, `docs/` 폴더 배포)
+- **배포 주소:** <https://sungtae10.github.io/codyssey-semiconductor-trend-analysis-M1-1/> (GitHub Pages. 대시보드 파일은 `docs/` 폴더에 있고, 첫 주소로 들어오면 저장소 루트의 `index.html`이 `docs/`로 넘겨 준다)
 - **하는 일:** 리포트의 그림은 고정된 한 장면이다. 대시보드는 기간·지표·종목을 바꾸면 **숫자 표, 그래프, 월별 수익률 표를 그 구간으로 다시 계산**해서, 리포트의 주장을 다른 기간에서도 직접 확인하게 해 준다.
 - **제출 형식:** 미션 보너스의 (1) 배포 URL과 (3) 스크린샷 세트 + 기간·조건 변경 시나리오를 함께 제출한다.
 
