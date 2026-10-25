@@ -1,0 +1,41 @@
+{
+  "source": {
+    "name": "KRX 전종목 일별 시세 (한국거래소 정보데이터시스템)",
+    "collected_via": "https://github.com/FinanceData/marcap",
+    "ref": "eeed0817d1478597b738a3a6149c170ec7e3f4cb",
+    "files": [
+      "data/marcap-2022.parquet",
+      "data/marcap-2023.parquet",
+      "data/marcap-2024.parquet",
+      "data/marcap-2025.parquet",
+      "data/marcap-2026.parquet"
+    ],
+    "sha256": {
+      "2022": "179650f5d1bd6abecb03d1b8eddf5f59c5ca6a0402e7bf2578635790b9ca811c",
+      "2023": "08f96990358f5afc4e17321613cef7126e2f0bd4290b82db952b7808d87f9c22",
+      "2024": "b0c38943e67637d5faf88429880092cf0f46a394be39860dd3bcd0b04231bccb",
+      "2025": "2bfd93c217eb74263bc5020b23fa6debb6b02531c11eaccc2826639bc191559e",
+      "2026": "ecbba74c6ddacece3b0224de7776d3b4c3f561675c58abcef23816c8c3cada36"
+    }
+  },
+  "outputs": {
+    "stocks": {
+      "path": "data/raw/krx_daily_005930_000660.csv",
+      "sha256": "b089f5cb717414aa353d0ff761994ea15b75d0b4fd17603a46a9a09ac9205502",
+      "rows": 2104,
+      "date_min": "2022-07-01",
+      "date_max": "2026-10-22"
+    },
+    "kospi_market": {
+      "path": "data/raw/kospi_market_daily.csv",
+      "sha256": "745f7ae31969043b0228fd13138d2ce16874aea8d1b69681a40a77b2a291e57b",
+      "rows": 1052,
+      "date_min": "2022-07-01",
+      "date_max": "2026-10-22"
+    }
+  },
+  "period": {
+    "fetch_start": "2022-07-01",
+    "end": "2026-10-22"
+  }
+}
