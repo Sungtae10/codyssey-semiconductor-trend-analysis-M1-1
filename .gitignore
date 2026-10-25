@@ -1,0 +1,14 @@
+# 파이썬
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# 내려받은 원천 parquet(약 120MB)은 올리지 않는다. python -m src.fetch_data 가 다시 받는다.
+data/cache/
+
+# 기타
+.DS_Store
+Thumbs.db
+.env
