@@ -1,0 +1,196 @@
+/* 삼성전자 트렌드 탐색기
+   색: 데이터 색(삼성전자 파랑, SK하이닉스 주황, KOSPI 회색)은 검증한 팔레트를 그대로 쓰고,
+   화면 바탕은 실리콘 웨이퍼처럼 차가운 은회색으로 잡았다. 강조는 '읽어 주는 문장' 한 곳에만 둔다. */
+:root {
+  color-scheme: light;
+  --page: #f3f5f7;
+  --surface: #fcfcfb;
+  --ink: #141920;
+  --ink-2: #4a525e;
+  --muted: #646c78;
+  --grid: #e3e6ea;
+  --axis: #c5cad1;
+  --line: #d9dde2;
+  --sec: #2a78d6;
+  --skh: #eb6834;
+  --kospi: #898781;
+  --up: #e34948;
+  --down: #2a78d6;
+  --neutral: #f0efec;
+  --chip: #141920;
+  --chip-ink: #ffffff;
+  --focus: #2a78d6;
+  --ma20: #8a919b;
+  --ma60: #545c68;
+  --ma120: #141920;
+  --font: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0f1216;
+    --surface: #161a1f;
+    --ink: #edf0f3;
+    --ink-2: #b7bec7;
+    --muted: #949ba5;
+    --grid: #262c33;
+    --axis: #3a414a;
+    --line: #2b3139;
+    --sec: #3987e5;
+    --skh: #d95926;
+    --kospi: #898781;
+    --up: #e66767;
+    --down: #3987e5;
+    --neutral: #383835;
+    --chip: #edf0f3;
+    --chip-ink: #0f1216;
+    --focus: #6da7ec;
+    --ma20: #6f7781;
+    --ma60: #a7aeb8;
+    --ma120: #edf0f3;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0f1216;
+  --surface: #161a1f;
+  --ink: #edf0f3;
+  --ink-2: #b7bec7;
+  --muted: #949ba5;
+  --grid: #262c33;
+  --axis: #3a414a;
+  --line: #2b3139;
+  --sec: #3987e5;
+  --skh: #d95926;
+  --kospi: #898781;
+  --up: #e66767;
+  --down: #3987e5;
+  --neutral: #383835;
+  --chip: #edf0f3;
+  --chip-ink: #0f1216;
+  --focus: #6da7ec;
+  --ma20: #6f7781;
+  --ma60: #a7aeb8;
+  --ma120: #edf0f3;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+}
+a { color: inherit; text-decoration-color: var(--axis); text-underline-offset: 3px; }
+a:hover { text-decoration-color: currentColor; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
+.skip { position: absolute; left: -999px; top: 8px; background: var(--surface); padding: 6px 10px; }
+.skip:focus { left: 16px; z-index: 10; }
+
+.page { max-width: 1180px; margin: 0 auto; padding: 32px 24px 56px; }
+
+/* 머리말 */
+.masthead-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+h1 { font-size: 30px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+.lede { margin: 10px 0 0; max-width: 68ch; color: var(--ink-2); }
+.links { display: flex; gap: 18px; margin: 10px 0 0; font-weight: 500; }
+.theme-toggle {
+  font: inherit; font-size: 13px; color: var(--ink-2); background: transparent;
+  border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; cursor: pointer;
+}
+
+/* 읽어 주는 문장: 이 페이지에서 가장 큰 글자 */
+.readout { margin: 28px 0 22px; padding: 22px 0 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.readout p { margin: 0; }
+#readout-text { font-size: 24px; line-height: 1.55; font-weight: 500; max-width: 46em; word-break: keep-all; }
+#readout-text b { font-weight: 700; }
+#readout-text .who { white-space: nowrap; }
+.readout-note { margin-top: 8px !important; color: var(--muted); font-size: 13px; }
+.key { display: inline-block; width: 16px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; transform: translateY(-2px); }
+.key-sec { background: var(--sec); }
+.key-skh { background: var(--skh); }
+.key-kospi { background: var(--kospi); }
+.key-ex2 { background: var(--kospi); }
+
+/* 보기 설정: 그래프들 위 한 줄(좁은 화면에서는 줄바꿈) */
+.filters {
+  display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: flex-start;
+  padding: 16px 0 20px; position: sticky; top: 0; z-index: 5; background: var(--page);
+}
+.filter-group { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.filter-group legend { float: left; font-size: 13px; color: var(--muted); font-weight: 500; margin-right: 4px; padding: 0; }
+.seg { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.seg button {
+  font: inherit; font-size: 14px; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 6px; padding: 5px 11px; cursor: pointer; line-height: 1.4;
+}
+.seg button:hover { border-color: var(--axis); }
+.seg button[aria-pressed="true"] { background: var(--chip); color: var(--chip-ink); border-color: var(--chip); }
+.seg-small button { font-size: 13px; padding: 3px 9px; }
+.seg-label { font-size: 13px; color: var(--muted); align-self: center; margin-right: 2px; }
+.dates { display: inline-flex; gap: 10px; font-size: 13px; color: var(--muted); }
+.dates input {
+  font: inherit; font-size: 14px; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px;
+}
+.checks { display: inline-flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; }
+.checks label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.checks input { accent-color: var(--chip); margin: 0; }
+.is-disabled { opacity: 0.45; }
+
+/* 본문 블록: 카드 대신 위 경계선으로 구획 */
+.block { padding: 26px 0 8px; border-top: 1px solid var(--line); }
+.block-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px; }
+h2 { font-size: 19px; line-height: 1.35; font-weight: 600; margin: 0; }
+.block-note { margin: 6px 0 12px; color: var(--muted); font-size: 13.5px; max-width: 80ch; }
+.link-button { font: inherit; font-size: 14px; background: none; border: 0; padding: 0; color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--axis); text-underline-offset: 3px; cursor: pointer; }
+
+.chart { width: 100%; height: 470px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+
+/* 표 */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.table-wrap.tall { max-height: 420px; overflow-y: auto; margin-top: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 9px 12px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
+th { font-weight: 500; color: var(--muted); font-size: 13px; background: var(--surface); position: sticky; top: 0; }
+th:first-child, td:first-child { text-align: left; }
+tbody tr:last-child td { border-bottom: 0; }
+td .sub { display: block; color: var(--muted); font-size: 12px; }
+.kpi td:first-child { font-weight: 600; }
+.pos { color: var(--ink); }
+.monthly th, .monthly td { text-align: center; padding: 8px 6px; min-width: 56px; }
+.monthly td.cell { font-size: 13px; }
+.monthly td.out { opacity: 0.32; }
+.monthly td.empty { color: var(--muted); }
+
+/* 사건 목록: 날짜 순서라 번호가 의미를 가진다 */
+.events { list-style: none; margin: 0; padding: 0; counter-reset: ev; }
+.events li { display: grid; grid-template-columns: 2.2em 7.4em 1fr auto; gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid var(--grid); align-items: baseline; }
+.events li::before { counter-increment: ev; content: counter(ev); color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.events time { color: var(--ink-2); font-size: 14px; font-variant-numeric: tabular-nums; }
+.events .what b { font-weight: 600; }
+.events .what p { margin: 2px 0 0; color: var(--ink-2); font-size: 13.5px; }
+.events .src { display: block; margin-top: 2px; font-size: 12.5px; color: var(--muted); }
+.events button { font: inherit; font-size: 13px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; cursor: pointer; }
+
+.footer { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+.footer p { margin: 0 0 6px; max-width: 90ch; }
+
+@media (max-width: 720px) {
+  .page { padding: 22px 16px 44px; }
+  h1 { font-size: 24px; }
+  #readout-text { font-size: 19px; }
+  .filters { position: static; }
+  .chart { height: 380px; }
+  .events li { grid-template-columns: 1.6em 1fr; }
+  .events li time { grid-column: 2; }
+  .events li .what { grid-column: 2; }
+  .events li button { grid-column: 2; justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; }
+}

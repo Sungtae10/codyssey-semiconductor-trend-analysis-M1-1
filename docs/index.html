@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>삼성전자 트렌드 탐색기</title>
+  <meta name="description" content="2023~2026년 삼성전자·SK하이닉스·KOSPI 일별 시세를 기간과 지표를 바꿔 가며 살펴보는 대시보드">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main-chart">그래프로 건너뛰기</a>
+  <div class="page">
+    <header class="masthead">
+      <div class="masthead-row">
+        <h1>삼성전자 트렌드 탐색기</h1>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="화면 밝기 전환">어둡게</button>
+      </div>
+      <p class="lede">AI 반도체 사이클(2023.1.2~2026.10.22) 동안 삼성전자를 SK하이닉스, KOSPI와 나란히 봅니다.
+        기간과 지표를 바꾸면 아래 숫자·그래프·표가 모두 그 구간으로 다시 계산됩니다.</p>
+      <p class="links">
+        <a href="https://github.com/Sungtae10/codyssey-semiconductor-trend-analysis/blob/main/REPORT.md">분석 리포트</a>
+        <a href="https://github.com/Sungtae10/codyssey-semiconductor-trend-analysis">코드와 데이터</a>
+      </p>
+    </header>
+
+    <section class="readout" aria-live="polite">
+      <p id="readout-text">불러오는 중</p>
+      <p class="readout-note" id="readout-note"></p>
+    </section>
+
+    <form class="filters" id="filters" aria-label="보기 설정">
+      <fieldset class="filter-group">
+        <legend>기간</legend>
+        <div class="seg" role="group" aria-label="기간 빠른 선택" id="period-presets">
+          <button type="button" data-preset="all" aria-pressed="true">전체</button>
+          <button type="button" data-preset="2023" aria-pressed="false">2023</button>
+          <button type="button" data-preset="2024" aria-pressed="false">2024</button>
+          <button type="button" data-preset="2025" aria-pressed="false">2025</button>
+          <button type="button" data-preset="2026" aria-pressed="false">2026</button>
+          <button type="button" data-preset="6m" aria-pressed="false">최근 6개월</button>
+        </div>
+        <div class="dates">
+          <label>시작 <input type="date" id="start-date"></label>
+          <label>끝 <input type="date" id="end-date"></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend>지표</legend>
+        <div class="seg" role="group" aria-label="지표 선택" id="metric-buttons">
+          <button type="button" data-metric="cum" aria-pressed="true">누적 수익률</button>
+          <button type="button" data-metric="price" aria-pressed="false">주가</button>
+          <button type="button" data-metric="dd" aria-pressed="false">고점 대비 낙폭</button>
+          <button type="button" data-metric="vol" aria-pressed="false">변동성</button>
+          <button type="button" data-metric="corr" aria-pressed="false">동조화</button>
+          <button type="button" data-metric="share" aria-pressed="false">KOSPI 내 비중</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend>종목</legend>
+        <div class="checks" id="series-checks">
+          <label><input type="checkbox" value="SEC" checked><span class="key key-sec" aria-hidden="true"></span>삼성전자</label>
+          <label><input type="checkbox" value="SKH" checked><span class="key key-skh" aria-hidden="true"></span>SK하이닉스</label>
+          <label><input type="checkbox" value="KOSPI" checked><span class="key key-kospi" aria-hidden="true"></span>KOSPI(재계산)</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="filter-group options">
+        <legend>표시</legend>
+        <div class="checks">
+          <label><input type="checkbox" id="opt-log" checked>로그 눈금</label>
+          <label><input type="checkbox" id="opt-events" checked>사건 표시</label>
+        </div>
+        <div class="seg seg-small" role="group" aria-label="이동평균선" id="ma-buttons">
+          <span class="seg-label">이동평균</span>
+          <button type="button" data-ma="20" aria-pressed="false">20일</button>
+          <button type="button" data-ma="60" aria-pressed="true">60일</button>
+          <button type="button" data-ma="120" aria-pressed="true">120일</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <main>
+      <section class="block" aria-labelledby="kpi-title">
+        <h2 id="kpi-title">선택한 기간의 숫자</h2>
+        <p class="block-note" id="kpi-note"></p>
+        <div class="table-wrap">
+          <table class="kpi" id="kpi-table">
+            <thead>
+              <tr>
+                <th scope="col">종목</th>
+                <th scope="col">출발 → 끝</th>
+                <th scope="col">기간 수익률</th>
+                <th scope="col">연환산 변동성</th>
+                <th scope="col">최대 낙폭</th>
+                <th scope="col">기간 최고</th>
+                <th scope="col">기간 최저</th>
+                <th scope="col">상승일 비율</th>
+                <th scope="col">삼성전자와 상관</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="block" aria-labelledby="chart-title">
+        <div class="block-head">
+          <h2 id="chart-title">누적 수익률</h2>
+          <button type="button" class="link-button" id="table-toggle" aria-expanded="false" aria-controls="chart-table-wrap">표로 보기</button>
+        </div>
+        <p class="block-note" id="chart-note"></p>
+        <div id="main-chart" class="chart" role="img" aria-label="선택한 지표의 일별 그래프"></div>
+        <div class="table-wrap tall" id="chart-table-wrap" hidden>
+          <table class="data" id="chart-table"></table>
+        </div>
+      </section>
+
+      <section class="block" aria-labelledby="monthly-title">
+        <div class="block-head">
+          <h2 id="monthly-title">월별 수익률</h2>
+          <div class="seg seg-small" role="group" aria-label="월별 수익률 종목" id="monthly-series">
+            <button type="button" data-series="SEC" aria-pressed="true">삼성전자</button>
+            <button type="button" data-series="SKH" aria-pressed="false">SK하이닉스</button>
+            <button type="button" data-series="KOSPI" aria-pressed="false">KOSPI</button>
+          </div>
+        </div>
+        <p class="block-note">월말 종가 기준. 빨강은 상승, 파랑은 하락(국내 증시 표기 관례)이며, 선택한 기간 밖의 달은 흐리게 보입니다.</p>
+        <div class="table-wrap">
+          <table class="monthly" id="monthly-table"></table>
+        </div>
+      </section>
+
+      <section class="block" aria-labelledby="events-title">
+        <h2 id="events-title">출처로 확인한 사건</h2>
+        <p class="block-note">그래프의 세로선과 같은 목록입니다. ‘전후 보기’를 누르면 그날 앞뒤 두 달로 기간이 바뀝니다.
+          원인 설명은 각 기사의 분석이며, 이 대시보드가 인과관계를 증명하지는 않습니다.</p>
+        <ol class="events" id="event-list"></ol>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>자료: 한국거래소(KRX) 일별 시세를 정리한 FinanceData/marcap 공개 저장소(커밋 <span id="data-ref"></span>).
+        KOSPI(재계산)는 KOSPI 보통주의 전일 시가총액 가중 등락률을 누적한 값으로, 공식 지수와의 차이는 0.15% 이내입니다.</p>
+      <p>수익률은 배당을 뺀 가격 수익률입니다. 이 페이지는 학습용 분석이며 투자 권유가 아닙니다.</p>
+    </footer>
+  </div>
+
+  <script src="vendor/plotly-basic-2.35.2.min.js"></script>
+  <script src="data/dashboard-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
