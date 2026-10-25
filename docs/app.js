@@ -207,6 +207,20 @@
   function yAxis(extra) {
     return Object.assign({ gridcolor: css("--grid"), zeroline: false, linecolor: css("--axis"), automargin: true, tickfont: { color: css("--ink-2") } }, extra || {});
   }
+  // 로그 눈금 숫자: Plotly 기본값은 1,000 다음 눈금을 '2, 3, 4'처럼 앞자리만 적어 2,000인지 알기 어렵다.
+  // 값의 폭이 3배 이상이면 정해 둔 눈금(× 10ⁿ)만 전체 숫자로 적는다. 폭이 15배 이상이면 1·2·3·5, 그보다 좁으면
+  // 1·1.5·2·3·4·5·7로 촘촘히 둔다. 폭이 3배보다 좁으면 Plotly 기본값(전체 숫자로 나온다)을 쓴다.
+  function logTicks(values) {
+    let lo = Infinity, hi = -Infinity;
+    values.forEach((v) => { if (v > 0 && isFinite(v)) { if (v < lo) lo = v; if (v > hi) hi = v; } });
+    if (!(hi / lo >= 3)) return {};
+    const mults = hi / lo >= 15 ? [1, 2, 3, 5] : [1, 1.5, 2, 3, 4, 5, 7];
+    const vals = [];
+    for (let p = Math.floor(Math.log10(lo)); p <= Math.ceil(Math.log10(hi)); p++) {
+      mults.forEach((m) => { const t = m * Math.pow(10, p); if (t >= lo * 0.9 && t <= hi * 1.1) vals.push(t); });
+    }
+    return { tickmode: "array", tickvals: vals, ticktext: vals.map((t) => nf0.format(t)) };
+  }
   function line(name, x, y, colorVar, extra) {
     return Object.assign({
       type: "scatter", mode: "lines", name, x, y,
@@ -245,7 +259,8 @@
         const c = COLS[SERIES[k].close], base = c[range.b];
         traces.push(line(SERIES[k].name, xs, c.slice(range.b, range.e + 1).map((v) => (v / base) * 100), SERIES[k].color));
       });
-      layout.yaxis = yAxis({ type: state.log ? "log" : "linear", title: { text: "출발값 = 100", font: { size: 12 } } });
+      layout.yaxis = yAxis(Object.assign({ type: state.log ? "log" : "linear", tickformat: ",.0f", title: { text: "출발값 = 100", font: { size: 12 } } },
+        state.log ? logTicks(traces.flatMap((t) => t.y)) : {}));
       layout.shapes.push({ type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: 100, y1: 100, line: { color: css("--axis"), width: 1 } });
     } else if (m === "price") {
       const n = keys.length || 1;
@@ -256,11 +271,13 @@
         const axisName = i === 0 ? "y" : "y" + (i + 1);
         const layoutKey = i === 0 ? "yaxis" : "yaxis" + (i + 1);
         const top = 1 - i * (h + gap);
-        layout[layoutKey] = yAxis({
+        const shown = [COLS[S.close]].concat([20, 60, 120].filter((w) => state.ma.has(w)).map((w) => COLS[S.ma + w]))
+          .flatMap((c) => c.slice(range.b, range.e + 1));
+        layout[layoutKey] = yAxis(Object.assign({
           domain: [top - h, top], type: state.log ? "log" : "linear",
           title: { text: `${S.name} (${S.unit})`, font: { size: 12 } },
           tickformat: ",.0f",
-        });
+        }, state.log ? logTicks(shown) : {}));
         const fmt = k === "KOSPI" ? "%{y:,.2f}" : "%{y:,.0f}원";
         traces.push(line(S.name, xs, COLS[S.close].slice(range.b, range.e + 1), S.color, { yaxis: axisName, hovertemplate: fmt, line: { color: css(S.color), width: 1.6 } }));
         const shades = { 20: "--ma20", 60: "--ma60", 120: "--ma120" };
