@@ -2,6 +2,8 @@
 
 AI 반도체 사이클 동안 삼성전자 주가가 어떻게 움직였는지 한국거래소(KRX) 일별 시세 927거래일로 분석했다. 같은 메모리 반도체 회사인 SK하이닉스, 그리고 같은 원천 데이터로 다시 계산한 KOSPI와 나란히 비교한다.
 
+**평가 항목별 안내:** 미션 요구사항마다 무엇을 했고 어디서 확인하는지는 [EVALUATION_GUIDE.md](EVALUATION_GUIDE.md)에 정리했다.
+
 ![SK하이닉스 16.3배, 삼성전자 3.9배, KOSPI 2.5배](images/02_relative_performance.png)
 
 | 2022-12-29 → 2026-10-22 | 삼성전자 | SK하이닉스 | KOSPI(재계산) |
@@ -14,6 +16,7 @@ AI 반도체 사이클 동안 삼성전자 주가가 어떻게 움직였는지 �
 
 | 결과물 | 위치 |
 |---|---|
+| 평가 항목별 안내 (미션 요구사항 → 한 일 → 확인 위치) | [EVALUATION_GUIDE.md](EVALUATION_GUIDE.md) |
 | 분석 리포트 (주제, 질문, 데이터, 시각화, 인사이트, 결론·한계, AI 사용 로그) | [REPORT.md](REPORT.md) |
 | 분석 노트북 (실행 결과 포함) | [analysis.ipynb](analysis.ipynb) |
 | 웹 대시보드 (보너스, 기간·지표를 바꿔 다시 계산) | <https://sungtae10.github.io/codyssey-semiconductor-trend-analysis-M1-1/> · 사용 시나리오 [DASHBOARD.md](DASHBOARD.md) |
@@ -26,6 +29,7 @@ AI 반도체 사이클 동안 삼성전자 주가가 어떻게 움직였는지 �
 ```
 codyssey-semiconductor-trend-analysis-M1-1/
 ├── REPORT.md                  분석 리포트 (미션 필수 결과물)
+├── EVALUATION_GUIDE.md        평가 항목별 안내 (미션 요구사항마다 한 일과 확인 위치)
 ├── analysis.ipynb             노트북: 데이터 확인 → 정제 → 지표 → 그림 → 보너스 (출력 포함)
 ├── DASHBOARD.md               대시보드 실행 방법과 기간·조건 변경 시나리오
 ├── index.html                 GitHub Pages 첫 주소에서 대시보드(docs/)로 넘겨 주는 연결 페이지

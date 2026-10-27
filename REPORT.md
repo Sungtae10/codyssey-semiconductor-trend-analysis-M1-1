@@ -7,6 +7,7 @@
 - 데이터 기준일: 2026-10-22 (분석 기간 마지막 거래일)
 - 웹 대시보드: <https://sungtae10.github.io/codyssey-semiconductor-trend-analysis-M1-1/> (기간·지표를 바꿔 가며 숫자를 다시 계산)
 - 실행 방법과 폴더 구조: [README.md](README.md)
+- 평가 항목별 안내: [EVALUATION_GUIDE.md](EVALUATION_GUIDE.md) (미션 요구사항마다 한 일과 확인 위치)
 
 ## 목차
 
